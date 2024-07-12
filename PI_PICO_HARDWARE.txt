@@ -1,12 +1,13 @@
 Pin Number | Function
 
-1   ->     | 
-2   ->     | 
-3   ->     | 
-4   ->     | 
-5   ->     | 
-6   ->     | 
-7   ->     | 
+0   ->     | ENCODER_DATA_0
+1   ->     | ENCODER_CLK_0
+2   ->     | ENCODER_DATA_1
+3   ->     | ENCODER_CLK_1
+4   ->     | ENCODER_DATA_2
+5   ->     | ENCODER_CLK_2
+6   ->     | ENCODER_DATA_3
+7   ->     | ENCODER_CLK_3
 8   ->     | 
 9   ->     | 
 10  ->     | 
