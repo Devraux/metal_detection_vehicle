@@ -1,7 +1,16 @@
-#include "stdio.h"
-//#include "mylib/stdio.h"
+#include "main.h"
+
 
 int main()
-{
+{ 
 
+    stdio_init_all();
+    
+
+    while (true)
+    {
+
+    }
+
+    return 0;
 }
