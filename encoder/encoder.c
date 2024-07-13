@@ -25,31 +25,31 @@ void encoder_init(uint8_t gpio_data, uint8_t gpio_clk)
 
 void gpio_callback(uint8_t gpio_data, uint8_t gpio_clk, callback_params_t* params) {
     
-    if(gpio_get(encoder_0_clk) == 1 && gpio_get(encoder_0_data) == 0 && time_us_32 > time + 50000) //50 ms
+    if(gpio_get(encoder_0_clk) == 1 && gpio_get(encoder_0_data) == 0 && time_us_32() > time + 50000) //50 ms
         params->encoder_0_counter++;
     
-    if(gpio_get(encoder_0_clk) == 0 && gpio_get(encoder_0_data) == 1 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_0_clk) == 0 && gpio_get(encoder_0_data) == 1 && time_us_32() > time + 50000)
         params->encoder_0_counter--;
 
     
-    if(gpio_get(encoder_1_clk) == 1 && gpio_get(encoder_1_data) == 0 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_1_clk) == 1 && gpio_get(encoder_1_data) == 0 && time_us_32() > time + 50000)
         params->encoder_1_counter++;
     
-    if(gpio_get(encoder_1_clk) == 0 && gpio_get(encoder_1_data) == 1 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_1_clk) == 0 && gpio_get(encoder_1_data) == 1 && time_us_32() > time + 50000)
         params->encoder_1_counter--;
 
 
-    if(gpio_get(encoder_2_clk) == 1 && gpio_get(encoder_2_data) == 0 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_2_clk) == 1 && gpio_get(encoder_2_data) == 0 && time_us_32() > time + 50000)
         params->encoder_2_counter++;
     
-    if(gpio_get(encoder_2_clk) == 0 && gpio_get(encoder_2_data) == 1 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_2_clk) == 0 && gpio_get(encoder_2_data) == 1 && time_us_32() > time + 50000)
         params->encoder_2_counter--;
 
 
-    if(gpio_get(encoder_3_clk) == 1 && gpio_get(encoder_3_data) == 0 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_3_clk) == 1 && gpio_get(encoder_3_data) == 0 && time_us_32()> time + 50000)
         params->encoder_3_counter++;
     
-    if(gpio_get(encoder_3_clk) == 0 && gpio_get(encoder_3_data) == 1 && time_us_32 > time + 50000)
+    if(gpio_get(encoder_3_clk) == 0 && gpio_get(encoder_3_data) == 1 && time_us_32() > time + 50000)
         params->encoder_3_counter--;
 
 
