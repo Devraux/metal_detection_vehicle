@@ -16,9 +16,9 @@ int main()
     {
         printf("encoder_1: %d\n", encoder_data.encoder_0_counter);
         printf("encoder_2: %d\n", encoder_data.encoder_1_counter);
-        //printf("encoder_1: %d\n", encoder_data.encoder_2_counter);
+        printf("encoder_3: %d\n", encoder_data.encoder_2_counter);
         printf("encoder_4: %d\n", encoder_data.encoder_3_counter);
-        sleep_ms(100);
+        sleep_ms(500);
     }
 
     return 0;

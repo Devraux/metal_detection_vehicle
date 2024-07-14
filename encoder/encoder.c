@@ -21,9 +21,9 @@ void encoder_init(uint8_t gpio_data, uint8_t gpio_clk, void (*callback)())
 
 
 void encoder_callback() 
-{
-    uint32_t  present_time = time_us_32();
-
+{   
+    printf("hello from encoder");
+    time = time_us_32();
     if(gpio_get(encoder_0_clk) == 0)
         encoder_data.encoder_0_counter++;
     if(gpio_get(encoder_0_data) == 0)
@@ -37,10 +37,9 @@ void encoder_callback()
         encoder_data.encoder_1_counter--;
 
 
-    if(gpio_get(encoder_2_clk) == 1 && gpio_get(encoder_2_data) == 0 && time_us_32() > time + 50000)
+    if(gpio_get(encoder_2_clk) == 0)
         encoder_data.encoder_2_counter++;
-    
-    if(gpio_get(encoder_2_clk) == 0 && gpio_get(encoder_2_data) == 1 && time_us_32() > time + 50000)
+    if(gpio_get(encoder_2_data) == 0)
         encoder_data.encoder_2_counter--;
 
 
