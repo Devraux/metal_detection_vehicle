@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <string.h>
 
 int main()
 { 
@@ -10,7 +10,7 @@ int main()
     encoder_init(encoder_1_data, encoder_1_clk, callback_1);
     encoder_init(encoder_2_data, encoder_2_clk, callback_1);
     encoder_init(encoder_3_data, encoder_3_clk, callback_1);
-
+struct netif_netif = netif_list;
 
     while (true)
     {
