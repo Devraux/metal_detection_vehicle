@@ -6,8 +6,10 @@ int main()
 {
     stdio_init_all();
 
-   // udp2_init();
-   // udp_run_beacon();
-   // cyw43_arch_deinit();
+ 
+    
+    //udp_Init();
+    //udp_Data_Send();
+    //cyw43_arch_deinit();
     return 0;
 }

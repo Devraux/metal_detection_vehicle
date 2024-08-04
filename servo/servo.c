@@ -5,6 +5,7 @@ void servo_init(uint8_t gpio_num)
     uint8_t slice_number = pwm_gpio_to_slice_num(gpio_num);
 
     gpio_set_function(gpio_num, GPIO_FUNC_PWM);
+    gpio_set_dir(gpio_num, true);
     pwm_set_clkdiv(slice_number, 250);
     pwm_set_enabled(slice_number, true);
     pwm_set_wrap(slice_number, 10000 - 1); // 10000 -> pwm_freq = 50Hz

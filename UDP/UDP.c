@@ -25,7 +25,7 @@ uint8_t udp_Init()
     }
 }
 
-void udp_print_Ip()
+void udp_Print_Ip()
 {
     struct netif* netif = netif_list; 
     while (netif != NULL)
@@ -44,14 +44,14 @@ void udp_Data_Send()
     struct udp_pcb* pcb = udp_new();  
 
     ip_addr_t addr;
-    ipaddr_aton(BEACON_TARGET, &addr);
+    ipaddr_aton(UDP_TARGET, &addr);
 
     int counter = 0;
     while (true) {
-        struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, BEACON_MSG_LEN_MAX+1, PBUF_RAM);
+        struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, UDP_MSG_LEN_MAX+1, PBUF_RAM);
         char *req = (char *)p->payload;
-        memset(req, 0, BEACON_MSG_LEN_MAX+1);
-        snprintf(req, BEACON_MSG_LEN_MAX, "%d\n", counter);
+        memset(req, 0, UDP_MSG_LEN_MAX+1);
+        snprintf(req, UDP_MSG_LEN_MAX, "%d\n", counter);
         err_t er = udp_sendto(pcb, p, &addr, UDP_PORT);
         pbuf_free(p);
         if (er != ERR_OK) {
@@ -68,12 +68,12 @@ void udp_Data_Send()
         // if you are using pico_cyw43_arch_poll, then you must poll periodically from your
         // main loop (not from a timer) to check for Wi-Fi driver or lwIP work that needs to be done.
         cyw43_arch_poll();
-        sleep_ms(BEACON_INTERVAL_MS);
+        sleep_ms(UDP_INTERVAL_MS);
 #else
         // if you are not using pico_cyw43_arch_poll, then WiFI driver and lwIP work
         // is done via interrupt in the background. This sleep is just an example of some (blocking)
         // work you might be doing.
-        sleep_ms(BEACON_INTERVAL_MS);
+        sleep_ms(UDP_INTERVAL_MS);
 #endif
     }
 }

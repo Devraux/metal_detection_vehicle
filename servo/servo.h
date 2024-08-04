@@ -1,5 +1,5 @@
-#ifndef _servo_
-#define _servo_
+#ifndef _SERVO_
+#define _SERVO_
 
 #include <stdlib.h>
 #include <stdint.h>
