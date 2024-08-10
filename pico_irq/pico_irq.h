@@ -1,6 +1,12 @@
 #ifndef _PICO_IRQ_
 #define _PICO_IRQ_
 
-void *gpio_callback(void);
+#include <stdint.h> 
+#include <stdio.h>
+
+
+#include "metal_detection/metal_detection.h"
+
+void gpio_callback(uint gpio, uint32_t events);
 
 #endif
