@@ -10,7 +10,6 @@ void metal_detect_init(uint8_t gpio_num, void *gpio_callback)
     gpio_set_irq_enabled_with_callback(gpio_num, GPIO_IRQ_EDGE_FALL, true, gpio_callback);
 }
 
-
 void metal_detect_callback(void)
 {
     static uint32_t last_detect_time = 0;

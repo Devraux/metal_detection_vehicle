@@ -9,6 +9,7 @@
 
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
+#include "hardware/irq.h"
 
 /**
  * @brief servo_init pwm slice init

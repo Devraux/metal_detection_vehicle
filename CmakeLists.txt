@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME}
     main.c
     servo/servo.c
     metal_detection/metal_detection.c
+    motion/motion.c
     pico_irq/pico_irq.c
     UDP/UDP.c)
 

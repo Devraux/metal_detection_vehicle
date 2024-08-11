@@ -3,18 +3,17 @@
 
 void gpio_callback(uint gpio, uint32_t events)
 {   
-    printf("hello form gpio_callback irq func\n");
     switch(gpio)
     {
-        case 14:
-           // metal_detect_callback();
-            printf("button 14 pressed\n");
+        static uint32_t time = 0;
+        
+        case 16 ... 17:
+            if(time_us_32() >= time + 250) //debouncing
+                distance_Update();
+            time = time_us_32();
         break;
 
-        case 15:
-           // metal_detect_callback();
-           printf("button 15 pressed\n");
-        break;
+
 
         default:
             printf("nothing to do");

@@ -11,6 +11,7 @@
 
 #include "servo/servo.h"
 #include "metal_detection/metal_detection.h"
+#include "motion/motion.h"
 #include "UDP/UDP.h"
 
 
