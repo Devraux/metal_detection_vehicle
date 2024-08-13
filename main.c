@@ -1,26 +1,33 @@
 #include "main.h"
 
 
-
 int main() 
 {
     stdio_init_all();
 
-   // metal_detect_init(14, gpio_callback);
-   // metal_detect_init(15, gpio_callback);
-    hall_Init(17, &gpio_callback);
-    hall_Init(16, &gpio_callback);
-    
+
+    //hall_Init(17, &gpio_callback);
+    hall_Init(hall_left, &gpio_callback);
+    servo_init(servo_front_left);
+    servo_init(servo_front_right);
+    servo_init(servo_back_left);
+    servo_init(servo_back_right);
+
     //udp_Init();
     //udp_Data_Send();
     //cyw43_arch_deinit();
 
 
-    while(1)
+    int num;
+    int result;
+    while (true) 
     {
-        //printf("still running...\n");
-        sleep_ms(1000);
+        result = scanf("%d", &num);
+    
+        if (result == 1)
+            move(num, 250);
+        else
+            num = 0;
     }
-
     return 0;
 }

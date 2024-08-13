@@ -2,15 +2,17 @@
 
 
 void gpio_callback(uint gpio, uint32_t events)
-{   
+{  
     switch(gpio)
     {
         static uint32_t time = 0;
-        
+        static int counter = 0;
         case 16 ... 17:
-            if(time_us_32() >= time + 250) //debouncing
+            if(time_us_32() >= time + 250){ //debouncing
                 distance_Update();
-            time = time_us_32();
+                counter++;
+                printf("distance %f\n", get_Distance());
+            }
         break;
 
 
