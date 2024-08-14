@@ -18,8 +18,8 @@ int main()
 
 
 
-    metal_detect_init(metal_detect_gpio, &gpio_callback);
-
+    metal_Detect_Init(metal_detect_gpio, &gpio_callback);
+    
     int num;
     int result;
     while (true) 

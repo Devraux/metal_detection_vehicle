@@ -13,6 +13,7 @@ add_executable(${PROJECT_NAME}
     metal_detection/metal_detection.c
     motion/motion.c
     pico_irq/pico_irq.c
+    buffer/buffer.c
     UDP/UDP.c)
 
 include_directories(servo)
