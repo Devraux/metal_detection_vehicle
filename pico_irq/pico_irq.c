@@ -15,6 +15,10 @@ void gpio_callback(uint gpio, uint32_t events)
             }
         break;
 
+        case 18: //metal_detection
+            metal_detect_callback();
+        break;
+
 
 
         default:

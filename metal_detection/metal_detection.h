@@ -8,6 +8,8 @@
 #include "hardware/timer.h"
 #include "hardware/pwm.h"
 
+#define metal_detect_gpio 18
+
 typedef struct metal_detect_data
 {
     //uint32_t last_detect_time;
@@ -21,7 +23,7 @@ extern metal_detect_data metal_detect_data_t;
 
 /// @brief initialize metal detection part
 /// @param  -- 
-void metal_detect_init(uint8_t gpio_num, void *gpio_callback);
+void metal_detect_init(uint8_t gpio_num_t, void *gpio_callback);
 
 /// @brief metal detection
 /// @param  --

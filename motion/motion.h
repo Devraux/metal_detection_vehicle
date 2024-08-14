@@ -47,4 +47,8 @@ float get_Distance(void);
 /// @param velocity 
 void move(uint8_t side, int16_t velocity);
 
+//TODO - accelerometer compulsory
+void turn_left();
+void trn_right();
+
 #endif
