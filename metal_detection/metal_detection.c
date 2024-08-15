@@ -31,13 +31,10 @@ bool metal_Detect_Get_Avg(struct repeating_timer *timer)
 {
     uint32_t sum = 0;
     for(uint32_t i = 0; i < buffer.buffer_Size; i++)
-    {
         sum += buffer.buffer_Data[i];
-    }
 
     metal_detect_data.detection_Average = sum / buffer.counter;
     check_Metal_Detect();
-    printf("\nmetal_detected: %d", metal_detect_data.metal_detected);
     buffer_Clear(&buffer);
     return true;
 }
@@ -48,12 +45,12 @@ void check_Metal_Detect(void)
 
     if(metal_detection_avg_t != metal_detect_data.detection_Average)
     {
-        metal_detect_data.metal_detected = true;
-        metal_detect_data.detected_metal_counter++;
+        metal_detect_data.metal_Detected = true;
+        metal_detect_data.detected_Metal_Counter++;
     }
 
     else        
-        metal_detect_data.metal_detected = false;
+        metal_detect_data.metal_Detected = false;
 
     metal_detection_avg_t = metal_detect_data.detection_Average; 
 

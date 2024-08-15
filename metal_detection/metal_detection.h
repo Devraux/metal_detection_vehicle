@@ -11,14 +11,13 @@
 #include "hardware/timer.h"
 #include "hardware/pwm.h"
 
-
 #define metal_detect_gpio 18
 
 typedef struct metal_detect_data_t
 {
-    bool metal_detected;              // 0 -> metal is not detected, 1-> metal detected
-    uint32_t detected_metal_counter;  //counts metal occurrences 
-    uint32_t detection_Average;       //an auxiliary variable storing the average value of the time between the occurrences of the generator signal edges  
+    bool metal_Detected;              // 0 -> metal is not detected, 1-> metal detected
+    uint32_t detected_Metal_Counter;  //counts metal occurrences 
+    uint32_t detection_Average;       //additional variable storing the average value of the time between the occurrences of the generator signal edges  
 }metal_detect_data_t;
 
 extern metal_detect_data_t metal_detect_data;
@@ -33,7 +32,7 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback);
 void metal_Detect_Callback(void);
 
 /// @brief metal detection get average value
-/// @param --
+/// @param timer pico sdk standard operator 
 /// @return average time between metal detector generator edges
 bool metal_Detect_Get_Avg(struct repeating_timer *timer);
 
