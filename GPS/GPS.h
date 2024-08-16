@@ -16,14 +16,9 @@
 #define UART_ID 1
 #define GPS_MSG_MAX_LEN 255
 
-typedef enum GPS_State_t{ //NMEA message 
-    STATE_GPRMC, 
-    STATE_GPVTG, 
-    STATE_GPGGA, 
-    STATE_GPGSA, 
-    STATE_GPGSV, 
-    STATE_GPGLL, 
-    STATE_GOT_MSG,
+typedef enum GPS_State_t{ 
+    GOT_FRAME_BEGINNING,  // got '$' char
+    GOT_NMEA_FRAME,       // got full frame
 }GPS_State_t;
 
 typedef struct GPS_t{
@@ -58,10 +53,20 @@ typedef struct GPS_t{
 
 extern GPS_t GPS;
 
+/// @brief GPS module initialization
+/// @param rx_Gpio_t - rx GPIO PIN
+/// @param tx_Gpio_t - tx GPIO PIN
 void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t);
 
+/// @brief TODO
+/// @param GPS 
 void GPS_read(GPS_t *GPS);
 
+/// @brief PI PICO UART IRQ HANDLER
+/// @param  -
 void uart_Handler(void);
 
+/// @brief parse received frame and save result in GPS data structure 
+/// @param -
+void NMEA_FRAME_PARSE(void);
 #endif

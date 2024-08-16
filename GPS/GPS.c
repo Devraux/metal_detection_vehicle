@@ -3,7 +3,6 @@
 GPS_t GPS = {0};
 GPS_State_t GPS_State;
 buffer_t nmea_Frame_Buffer = {0}; 
-buffer_t tmp_Buffer = {0};
 
 void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
 {
@@ -20,53 +19,31 @@ void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
     irq_set_enabled(UART1_IRQ, true);  
 
     char *nmea_Frame_Buffer_Data = (char*)malloc(GPS_MSG_MAX_LEN * sizeof(char));
-    char *tmp_Buffer_Data = (char*)malloc(GPS_MSG_MAX_LEN * sizeof(char));
-
     buffer_Init(&nmea_Frame_Buffer, nmea_Frame_Buffer_Data, GPS_MSG_MAX_LEN);
-    buffer_Init(&tmp_Buffer, tmp_Buffer_Data, GPS_MSG_MAX_LEN);
 }
 
 void uart_Handler(void)
 {
-    char buffer[GPS_MSG_MAX_LEN] = {0};
-    char word_to_find[10] = "MC";
+    char data = '0';
 
     while(uart_is_readable(GPS.uart))
     {
         char data = uart_getc(GPS.uart); 
 
-    }
-
-    switch(GPS_State)
-    {
-        case STATE_GPRMC:
-
-            GPS_State = STATE_GPVTG;
-        break;
-
-        case STATE_GPVTG:
-            GPS_State = STATE_GPGGA;
-        break;
-
-        case STATE_GPGGA:
-            GPS_State =STATE_GPGSA;
-        break;
-
-        case STATE_GPGSA:
-            GPS_State = STATE_GPGSV;
-        break;
-
-        case STATE_GPGSV:
-            GPS_State = STATE_GPGLL;
-        break;
-
-        case STATE_GPGLL:
-            GPS_State = STATE_GOT_MSG;
-        break;
-
-        case STATE_GOT_MSG:
-            GPS_State = STATE_GPRMC;
-        break;
+        if(data == '$')
+            GPS_State = GOT_FRAME_BEGINNING;
         
+        if(data == '*')
+        {
+            GPS_State = GOT_NMEA_FRAME;
+        }
+
+        if(GPS_State == GOT_FRAME_BEGINNING)
+        {
+            buffer_Add(&nmea_Frame_Buffer, data);
+        }
+
     }
+
+
 }
