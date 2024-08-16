@@ -18,18 +18,26 @@ int main()
 
 
 
-    metal_Detect_Init(metal_detect_gpio, &gpio_callback);
-    
+    //metal_Detect_Init(metal_detect_gpio, &gpio_callback);
+    GPS_Init(rx_Gpio,tx_Gpio);
     int num;
     int result;
     while (true) 
-    {
+    {   /*
         result = scanf("%d", &num);
     
         if (result == 1)
             move(num, 250);
         else
             num = 0;
+
+            
+        */
+       
+    
+
+    //printf("\n");
+    sleep_ms(100);
     }
     return 0;
 }

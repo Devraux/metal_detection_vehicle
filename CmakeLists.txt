@@ -14,6 +14,7 @@ add_executable(${PROJECT_NAME}
     motion/motion.c
     pico_irq/pico_irq.c
     buffer/buffer.c
+    GPS/GPS.c
     UDP/UDP.c)
 
 include_directories(servo)
@@ -34,6 +35,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_pwm
     hardware_gpio
     hardware_timer
+    hardware_uart
     pico_multicore
     pico_cyw43_arch_lwip_threadsafe_background)
 
