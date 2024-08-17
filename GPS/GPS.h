@@ -43,12 +43,12 @@ typedef struct GPS_t{
 	double Speed_Knots;
 	double Speed_Kilometers;
 
-	uint8_t Satellites_Number;
-	uint8_t Quality;    // 0 - no Fix, 1 - Fix, 2 - Dif. Fix
-	uint8_t Fix_Mode;    // 1 - no Fiz, 2 - 2D, 3 - 3D
-	double Dop;         // Dilution of precision
-	double Hdop;        // Dilution of precision for flat coords
-	double Vdop;        // Dilution of precision for height
+	// uint8_t Satellites_Number;
+	// uint8_t Quality;    // 0 - no Fix, 1 - Fix, 2 - Dif. Fix
+	// uint8_t Fix_Mode;    // 1 - no Fiz, 2 - 2D, 3 - 3D
+	// double Dop;         // Dilution of precision
+	// double Hdop;        // Dilution of precision for flat coords
+	// double Vdop;        // Dilution of precision for height
 
 }GPS_t;
 
@@ -70,4 +70,9 @@ void uart_Handler(void);
 /// @brief parse received frame and save result in GPS data structure 
 /// @param -
 void NMEA_FRAME_PARSE(void);
+
+/// @brief modifications of c stroke function
+/// @param str string
+/// @param delim delimeter 
+char* strtoke(char *str, const char *delim);
 #endif
