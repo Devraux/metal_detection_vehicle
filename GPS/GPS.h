@@ -3,6 +3,7 @@
 
 #include <stdint.h>  
 #include <stdio.h>
+#include <stdlib.h>
 #include "hardware/uart.h"
 #include "hardware/irq.h"
 #include "hardware/gpio.h"
