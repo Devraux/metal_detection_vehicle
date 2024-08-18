@@ -32,14 +32,16 @@ typedef struct GPS_t{
 	uint32_t Month;
 	uint32_t Year;
 
-    double Latitude;
-	char Latitude_Direction;
-	double Longitude;
-	char Longitude_Direction;
-	double Altitude;
+    uint32_t Latitude;
+	uint32_t Latitude_dec;         //fract value
+	uint32_t Latitude_Direction;  
+	uint32_t Longitude;
+	uint32_t Longitude_dec;		   //fract value
+	uint32_t Longitude_Direction;
+	//double Altitude;
 
-	double Speed_Knots;
-	double Speed_Kilometers;
+	uint32_t speed_Knots;
+	uint32_t speed_Knots_dec  //fract value
 
 	// uint8_t Satellites_Number;
 	// uint8_t Quality;    // 0 - no Fix, 1 - Fix, 2 - Dif. Fix
@@ -79,6 +81,12 @@ char* strtoke(char *str, const char *delim);
 /// @param digit_2 second digit
 uint32_t merge_2(uint32_t digit_1, uint32_t digit_2);
 
+/// @brief merge 3 digits for example: a = 1, b = 2, c = 3, result = 123 
+/// @param digit_1 first digit
+/// @param digit_2 second digit
+/// @param digit_3 third digit
+uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3);
+
 /// @brief merge 4 digits for example: a = 1, b = 2, c = 3, d = 4, result = 1234 
 /// @param digit_1 first digit
 /// @param digit_2 second digit
@@ -86,8 +94,17 @@ uint32_t merge_2(uint32_t digit_1, uint32_t digit_2);
 /// @param digit_4 fourth digit 
 uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4);
 
+/// @brief merge 5 digits for example: a = 1, b = 2, c = 3, d = 4, e = 5 result = 1234 5
+/// @param digit_1 first digit
+/// @param digit_2 second digit
+/// @param digit_3 third digit
+/// @param digit_4 fourth digit 
+/// @param digit_5 fifth digit
+uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4, uint32_t digit_5);
+
 /// @brief convert data from ASCII to uint32_t
 /// @param data input data
 /// @param data_Size size of data
 void ASCII_Convert(uint32_t *data, uint32_t data_Size);
+
 #endif

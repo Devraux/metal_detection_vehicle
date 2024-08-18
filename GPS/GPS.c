@@ -51,7 +51,21 @@ void NMEA_FRAME_PARSE(void)
         GPS.Hour =  (merge_2(nmea_Frame_Buffer.buffer_Data[7], nmea_Frame_Buffer.buffer_Data[8]) + 2) % 24;
         GPS.Minute = merge_2(nmea_Frame_Buffer.buffer_Data[9], nmea_Frame_Buffer.buffer_Data[10]);
         GPS.Second = merge_2(nmea_Frame_Buffer.buffer_Data[11], nmea_Frame_Buffer.buffer_Data[12]);
-        //printf("%d %d %d %d %d %d\n", nmea_Frame_Buffer.buffer_Data[7], nmea_Frame_Buffer.buffer_Data[8], nmea_Frame_Buffer.buffer_Data[9],nmea_Frame_Buffer.buffer_Data[10],nmea_Frame_Buffer.buffer_Data[11],nmea_Frame_Buffer.buffer_Data[12]);
+
+        GPS.Latitude = merge_4(nmea_Frame_Buffer.buffer_Data[16], nmea_Frame_Buffer.buffer_Data[17], nmea_Frame_Buffer.buffer_Data[18],nmea_Frame_Buffer.buffer_Data[19]);
+        GPS.Latitude_dec = merge_2(nmea_Frame_Buffer.buffer_Data[21],nmea_Frame_Buffer.buffer_Data[22]);
+        GPS.Latitude_Direction = nmea_Frame_Buffer.buffer_Data[24];
+
+        GPS.Longitude = merge_4(nmea_Frame_Buffer.buffer_Data[26], nmea_Frame_Buffer.buffer_Data[27], nmea_Frame_Buffer.buffer_Data[28],nmea_Frame_Buffer.buffer_Data[29]);
+        GPS.Longitude_dec = merge_2(nmea_Frame_Buffer.buffer_Data[31],nmea_Frame_Buffer.buffer_Data[32]);
+        GPS.Longitude_Direction = nmea_Frame_Buffer.buffer_Data[34];
+
+        GPS.speed_Knots = merge_3(nmea_Frame_Buffer.buffer_Data[36], nmea_Frame_Buffer.buffer_Data[37], nmea_Frame_Buffer.buffer_Data[38]);
+        GPS.speed_Knots_dec = nmea_Frame_Buffer.buffer_Data[40];
+
+        GPS.Day = merge_2(nmea_Frame_Buffer.buffer_Data[48],nmea_Frame_Buffer.buffer_Data[49]);
+        GPS.Month = merge_2(nmea_Frame_Buffer.buffer_Data[51],nmea_Frame_Buffer.buffer_Data[52]);
+        GPS.Year = merge_4(nmea_Frame_Buffer.buffer_Data[53],nmea_Frame_Buffer.buffer_Data[54], nmea_Frame_Buffer.buffer_Data[55],nmea_Frame_Buffer.buffer_Data[56]);
     }
 
     /* REST OF THIS DATA ARE NOT NECESSARY FOR MY PROJECT 
@@ -77,12 +91,22 @@ void NMEA_FRAME_PARSE(void)
     }
     //printf("\n------=END of NMEA FRAME=------\n");
     */  
-    printf("H: %d, M: %d, S: %d\n", GPS.Hour, GPS.Minute, GPS.Second);
 }
 
 uint32_t merge_2(uint32_t digit_1, uint32_t digit_2)
 {
     uint32_t result = (digit_1 << 3) + (digit_1 << 1) + digit_2;
+    return result;
+}
+
+uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3)
+{
+    uint32_t result = 0;
+
+    result = digit_1;
+    result = (result << 3) + (result << 1) + digit_2;
+    result = (result << 3) + (result << 1) + digit_3;
+
     return result;
 }
 
@@ -94,6 +118,19 @@ uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t 
     result= (result<< 3) + (result<< 1) + digit_2;
     result= (result<< 3) + (result<< 1) + digit_3;
     result= (result<< 3) + (result<< 1) + digit_4;
+
+    return result;
+}
+
+uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4, uint32_t digit_5)
+{    
+    uint32_t result = 0;
+
+    result = digit_1;
+    result = (result << 3) + (result << 1) + digit_2;
+    result = (result << 3) + (result << 1) + digit_3;
+    result = (result << 3) + (result << 1) + digit_4;
+    result = (result << 3) + (result << 1) + digit_5;
 
     return result;
 }
