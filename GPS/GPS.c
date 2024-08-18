@@ -117,38 +117,20 @@ char* strtoke(char *str, const char *delim)
 }
 
 
-
-//connect 2 values
-/*
-uint32_t a[2] = {3, 4}; 
-    uint32_t result;
-
-    result = (a[0] << 3) + (a[0] << 1) + a[1];
-
-    printf("Result: %d\n", result);
-*/
-
-//connect 4 values
-/*
-int main() {
-    unsigned char a[4] = {1, 2, 3, 4};  // Przykładowe wartości
-    unsigned int b = 0;
-
-    // Dodawanie wartości do zmiennej b przy użyciu przesunięć i dodawania
-    b = a[0];
-    
-    // Dodaj a[1] na miejsce setek
-    b = (b << 3) + (b << 1) + a[1];
-    
-    // Dodaj a[2] na miejsce dziesiątek
-    b = (b << 3) + (b << 1) + a[2];
-    
-    // Dodaj a[3] na miejsce jedności
-    b = (b << 3) + (b << 1) + a[3];
-
-    // Wyświetlenie wyniku
-    printf("Wynik: %u\n", b);
-
-    return 0;
+uint32_t merge_2(uint32_t digit_1, uint32_t digit_2)
+{
+    uint32_t result = (digit_1 << 3) + (digit_1 << 1) + digit_2;
+    return result;
 }
-*/
+
+uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4)
+{
+    uint32_t result = 0;
+
+    result= digit_1;
+    result= (result<< 3) + (result<< 1) + digit_2;
+    result= (result<< 3) + (result<< 1) + digit_3;
+    result= (result<< 3) + (result<< 1) + digit_4;
+
+    return result;
+}

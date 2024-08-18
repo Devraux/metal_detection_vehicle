@@ -75,4 +75,16 @@ void NMEA_FRAME_PARSE(void);
 /// @param str string
 /// @param delim delimeter 
 char* strtoke(char *str, const char *delim);
+
+/// @brief merge 2 digits for example: a = 1, b = 2, result = 12 
+/// @param digit_1 first digit
+/// @param digit_2 second digit
+uint32_t merge_2(uint32_t digit_1, uint32_t digit_2);
+
+/// @brief merge 4 digits for example: a = 1, b = 2, c = 3, d = 4, result = 1234 
+/// @param digit_1 first digit
+/// @param digit_2 second digit
+/// @param digit_3 third digit
+/// @param digit_4 fourth digit 
+uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4)
 #endif
