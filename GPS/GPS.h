@@ -28,9 +28,9 @@ typedef struct GPS_t{
     uint32_t Hour;
 	uint32_t Minute;
 	uint32_t Second;
-	uint32_t Day;
-	uint32_t Month;
-	uint32_t Year;
+	//uint32_t Day;
+	//uint32_t Month;
+	//uint32_t Year;
 
     uint32_t Latitude;
 	uint32_t Latitude_dec;         //fract value
@@ -40,8 +40,8 @@ typedef struct GPS_t{
 	uint32_t Longitude_Direction;
 	//double Altitude;
 
-	uint32_t speed_Knots;
-	uint32_t speed_Knots_dec  //fract value
+	//uint32_t speed_Knots;
+	//uint32_t speed_Knots_dec;  //fract value
 
 	// uint8_t Satellites_Number;
 	// uint8_t Quality;    // 0 - no Fix, 1 - Fix, 2 - Dif. Fix
@@ -70,11 +70,6 @@ void uart_Handler(void);
 /// @brief parse received frame and save result in GPS data structure 
 /// @param -
 void NMEA_FRAME_PARSE(void);
-
-/// @brief modifications of c stroke function
-/// @param str string
-/// @param delim delimeter 
-char* strtoke(char *str, const char *delim);
 
 /// @brief merge 2 digits for example: a = 1, b = 2, result = 12 
 /// @param digit_1 first digit
