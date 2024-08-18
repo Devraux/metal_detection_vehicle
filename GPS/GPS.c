@@ -1,8 +1,8 @@
 #include "GPS.h"
 
-GPS_t GPS = {0};
-GPS_State_t GPS_State;
-buffer_t nmea_Frame_Buffer = {0}; 
+static GPS_t GPS = {0};
+static GPS_State_t GPS_State;
+static buffer_t nmea_Frame_Buffer = {0}; 
 
 void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
 {
@@ -140,7 +140,7 @@ void ASCII_Convert(uint32_t *data, uint32_t data_Size)
         data[i] -= '0';
 }
 
-void GPS_Read(GPS_t *GPS_Struct)
+void get_GPS_Info(GPS_t *GPS_Struct)
 {
     memcpy(GPS_Struct, &GPS, sizeof(GPS_t));
 }

@@ -52,7 +52,6 @@ typedef struct GPS_t{
 
 }GPS_t;
 
-extern GPS_t GPS;
 
 /// @brief GPS module initialization
 /// @param rx_Gpio_t - rx GPIO PIN
@@ -102,4 +101,5 @@ uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t 
 /// @param data_Size size of data
 void ASCII_Convert(uint32_t *data, uint32_t data_Size);
 
+void get_GPS_Info(GPS_t *GPS_Struct);
 #endif

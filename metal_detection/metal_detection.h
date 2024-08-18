@@ -39,4 +39,6 @@ bool metal_Detect_Get_Avg(struct repeating_timer *timer);
 /// @brief checks whether metal is occurred
 /// @param  --
 void check_Metal_Detect(void);
+
+void get_Metal_Info(metal_detect_data_t *metal_detect_data);
 #endif

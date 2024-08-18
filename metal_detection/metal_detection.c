@@ -55,3 +55,9 @@ void check_Metal_Detect(void)
     metal_detection_avg_t = metal_detect_data.detection_Average; 
 
 }
+
+void get_Metal_Info(metal_detect_data_t *metal_detect_data_struct)
+{
+
+    memcpy(metal_detect_data_struct, &metal_detect_data, sizeof(metal_detect_data_t));
+}
