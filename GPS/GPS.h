@@ -25,14 +25,12 @@ typedef enum GPS_State_t{
 typedef struct GPS_t{
     uart_inst_t *uart;
 
-    char data[GPS_MSG_MAX_LEN];
-
-    uint8_t Hour;
-	uint8_t Minute;
-	uint8_t Second;
-	uint8_t Day;
-	uint8_t Month;
-	uint8_t Year;
+    uint32_t Hour;
+	uint32_t Minute;
+	uint32_t Second;
+	uint32_t Day;
+	uint32_t Month;
+	uint32_t Year;
 
     double Latitude;
 	char Latitude_Direction;
@@ -86,5 +84,10 @@ uint32_t merge_2(uint32_t digit_1, uint32_t digit_2);
 /// @param digit_2 second digit
 /// @param digit_3 third digit
 /// @param digit_4 fourth digit 
-uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4)
+uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4);
+
+/// @brief convert data from ASCII to uint32_t
+/// @param data input data
+/// @param data_Size size of data
+void ASCII_Convert(uint32_t *data, uint32_t data_Size);
 #endif
