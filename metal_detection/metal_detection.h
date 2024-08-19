@@ -20,7 +20,6 @@ typedef struct metal_detect_data_t
     uint32_t detection_Average;       //additional variable storing the average value of the time between the occurrences of the generator signal edges  
 }metal_detect_data_t;
 
-extern metal_detect_data_t metal_detect_data;
 
 /// @brief initialize metal detection part
 /// @param  -- 
@@ -40,5 +39,7 @@ bool metal_Detect_Get_Avg(struct repeating_timer *timer);
 /// @param  --
 void check_Metal_Detect(void);
 
-void get_Metal_Info(metal_detect_data_t *metal_detect_data);
+/// @brief getter function
+/// @param  metal_detect_data_struct metal detector data structure
+void get_Metal_Info(metal_detect_data_t *metal_detect_data_struct);
 #endif

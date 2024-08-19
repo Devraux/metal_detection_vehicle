@@ -1,8 +1,8 @@
 #include "metal_detection.h"
 
-metal_detect_data_t metal_detect_data = {0};
-buffer_t buffer;
-struct repeating_timer timer;
+static metal_detect_data_t metal_detect_data = {0};
+static buffer_t buffer;
+static struct repeating_timer timer;
 
 void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
 {
@@ -58,6 +58,5 @@ void check_Metal_Detect(void)
 
 void get_Metal_Info(metal_detect_data_t *metal_detect_data_struct)
 {
-
     memcpy(metal_detect_data_struct, &metal_detect_data, sizeof(metal_detect_data_t));
 }

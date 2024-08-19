@@ -49,6 +49,6 @@ void move(uint8_t side, int16_t velocity);
 
 //TODO - accelerometer compulsory
 void turn_left();
-void trn_right();
+void turn_right();
 
 #endif
