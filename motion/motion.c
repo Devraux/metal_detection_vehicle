@@ -22,7 +22,18 @@ void move_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t 
 
 void distance_Update(void)
 {
-    motion.distance += 0.0447761;
+    if(motion.move_Direction == 0)      // forward
+        motion.distance += 0.0447761;   // ~0.04477 meter
+
+    else if(motion.move_Direction == 1) //backward
+        motion.distance -= 0.0447761;   // ~0.04477 meter
+    
+    motion.distance_Absolute += 0.0447761;
+}
+
+uint8_t get_Move_Direction(void)
+{
+    return motion.move_Direction;
 }
 
 float get_Distance(void)
@@ -30,45 +41,50 @@ float get_Distance(void)
     return motion.distance;
 }
 
-void move(uint8_t side, int16_t velocity)
+void move(uint8_t move_direction_t, int16_t velocity_t)
 {
-    switch(side)
+    switch(move_direction_t)
     {
-        case 1: //forward
-            servo_set_velocity(servo_front_left, velocity);
-            servo_set_velocity(servo_front_right,velocity);
-            servo_set_velocity(servo_back_left,  velocity);
-            servo_set_velocity(servo_back_right, velocity);
+        case 0: //forward
+            servo_set_velocity(servo_front_left, velocity_t);
+            servo_set_velocity(servo_front_right,velocity_t);
+            servo_set_velocity(servo_back_left,  velocity_t);
+            servo_set_velocity(servo_back_right, velocity_t);
+            motion.move_Direction = 0;
         break;
 
-        case 2: //back
-            servo_set_velocity(servo_front_left, -velocity);
-            servo_set_velocity(servo_front_right,-velocity);
-            servo_set_velocity(servo_back_left,  -velocity);
-            servo_set_velocity(servo_back_right, -velocity);
+        case 1: //back
+            servo_set_velocity(servo_front_left, -velocity_t);
+            servo_set_velocity(servo_front_right,-velocity_t);
+            servo_set_velocity(servo_back_left,  -velocity_t);
+            servo_set_velocity(servo_back_right, -velocity_t);
+            motion.move_Direction = 1;
         break;
 
-        case 3: //left
-            servo_set_velocity(servo_front_left, -velocity/5);
-            servo_set_velocity(servo_front_right, velocity);
-            servo_set_velocity(servo_back_left,  -velocity/5);
-            servo_set_velocity(servo_back_right,  velocity);
+        case 2: //left
+            servo_set_velocity(servo_front_left, -velocity_t/5);
+            servo_set_velocity(servo_front_right, velocity_t);
+            servo_set_velocity(servo_back_left,  -velocity_t/5);
+            servo_set_velocity(servo_back_right,  velocity_t);
+            motion.move_Direction = 2;
  
         break;
 
-        case 4: //right
-            servo_set_velocity(servo_front_left,  velocity/5);
-            servo_set_velocity(servo_front_right,-velocity);
-            servo_set_velocity(servo_back_left,   velocity/5);
-            servo_set_velocity(servo_back_right, -velocity);
+        case 3: //right
+            servo_set_velocity(servo_front_left,  velocity_t/5);
+            servo_set_velocity(servo_front_right,-velocity_t);
+            servo_set_velocity(servo_back_left,   velocity_t/5);
+            servo_set_velocity(servo_back_right, -velocity_t);
+            motion.move_Direction = 3;
 
         break;
 
         default:
-            servo_set_velocity(servo_front_left, 0);
-            servo_set_velocity(servo_front_right,0);
-            servo_set_velocity(servo_back_left,  0);
-            servo_set_velocity(servo_back_right, 0);
+            servo_set_velocity(servo_front_left, 0); //STOP Vehicle
+            servo_set_velocity(servo_front_right,0); //STOP Vehicle
+            servo_set_velocity(servo_back_left,  0); //STOP Vehicle
+            servo_set_velocity(servo_back_right, 0); //STOP Vehicle
+            motion.move_Direction = 9;
     }   
 }
 
