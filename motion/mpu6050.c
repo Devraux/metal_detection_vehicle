@@ -102,7 +102,7 @@ bool mpu_Read(struct repeating_timer *timer)
     //float Y_Gyro = (Y_Gyro_No_Offset / 131);
     float Z_Gyro = 0;
 
-    if(Z_Gyro_No_Offset >= 60 || Z_Gyro_No_Offset <= -60)
+    if(Z_Gyro_No_Offset >= 60.0f || Z_Gyro_No_Offset <= -60.0f)
         Z_Gyro = (Z_Gyro_No_Offset / 131.0f);
     else 
         Z_Gyro_No_Offset = 0;

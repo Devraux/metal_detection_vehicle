@@ -23,10 +23,10 @@ void move_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t 
 void distance_Update(void)
 {
     if(motion.move_Direction == 0)      // forward
-        motion.distance += 0.0447761;   // ~0.04477 meter
+        motion.distance += hall_distance;   // ~0.04477 meter
 
     else if(motion.move_Direction == 1) //backward
-        motion.distance -= 0.0447761;   // ~0.04477 meter
+        motion.distance -= hall_distance;   // ~0.04477 meter
     
     motion.distance_Absolute += 0.0447761;
 }
@@ -41,9 +41,16 @@ float get_Distance(void)
     return motion.distance;
 }
 
+void XY_Position_Update(float angle)
+{
+    motion.current_position_X += hall_distance * cos(angle);
+    motion.current_position_Y += hall_distance * sin(angle);
+}
+
 void get_XY_Position(float *X, float *Y)
 {
-    
+    *X = motion.current_position_X;
+    *Y = motion.current_position_Y;
 }
 
 void move(uint8_t move_direction_t, int16_t velocity_t)

@@ -12,7 +12,10 @@ void gpio_callback(uint gpio, uint32_t events)
                 Hall_time = time_us_32();
 
                 if(get_Move_Direction() == 0 && get_Move_Direction() == 1) // if move direction == Back or move direction == Left
+                {   
                     distance_Update();
+                    XY_Position_Update(mpu_Get_Yaw());
+                }
             }
         break;
 

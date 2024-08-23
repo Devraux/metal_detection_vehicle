@@ -13,12 +13,15 @@
 
 #define hall_right 16            //right hall sensor
 #define hall_left 17             //left hall sensor
+#define hall_distance 0.0447761  //traveled distance between hall sensor irq's
 
 typedef struct motion_t{
     float    distance;
     uint32_t distance_Absolute;
     uint8_t  move_Direction; // 0-> forward 1-> back 2->left 3->right 9->STOP
     uint32_t velocity;       // current velocity from -250 to 250
+    float current_position_X;
+    float current_position_Y;
 }motion_t; 
 
 /// @brief vehicle motion devices(hall sensors and servos initialization)
@@ -51,6 +54,10 @@ uint8_t get_Move_Direction(void);
 /// @param move_direction_t 0-> forward 1-> back 2->left 3->right
 /// @param velocity_t vehicle to set velocity
 void move(uint8_t move_direction_t, int16_t velocity_t);
+
+/// @brief compute and update X and Y coordinates of device
+/// @param angle angle for example from mpu6050
+void XY_Position_Update(float angle);
 
 /// @brief calculate XY cartesian position
 /// @param X X position  

@@ -13,7 +13,7 @@ add_executable(${PROJECT_NAME}
     metal_detection/metal_detection.c
     motion/motion.c
     motion/mpu6050.c
-    motion/ring_Buffer.c
+    RingBuffer/ring_Buffer.c
     pico_irq/pico_irq.c
     buffer/buffer.c
     GPS/GPS.c
