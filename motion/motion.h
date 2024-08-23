@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "hardware/gpio.h"
 #include "servo/servo.h"
+#include "math.h"
 
 #define servo_front_right 10     //front - right 
 #define servo_back_right 11      //back  - right
@@ -51,6 +52,10 @@ uint8_t get_Move_Direction(void);
 /// @param velocity_t vehicle to set velocity
 void move(uint8_t move_direction_t, int16_t velocity_t);
 
+/// @brief calculate XY cartesian position
+/// @param X X position  
+/// @param Y Y position
+void get_XY_Position(float *X, float *Y);
 
 //TODO - accelerometer compulsory
 void turn_left();

@@ -16,7 +16,7 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
     add_repeating_timer_ms(-200, metal_Detect_Get_Avg, NULL, &timer);  // 5 times per second
 }
 
-void metal_Detect_Callback(void)
+void metal_Detect_Irq(void)
 {
     static uint32_t previous_edge_time = 0;
     uint32_t current_edge_time = time_us_32();

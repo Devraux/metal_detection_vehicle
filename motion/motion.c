@@ -41,6 +41,11 @@ float get_Distance(void)
     return motion.distance;
 }
 
+void get_XY_Position(float *X, float *Y)
+{
+    
+}
+
 void move(uint8_t move_direction_t, int16_t velocity_t)
 {
     switch(move_direction_t)
@@ -87,4 +92,3 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             motion.move_Direction = 9;
     }   
 }
-

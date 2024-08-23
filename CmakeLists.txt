@@ -12,6 +12,8 @@ add_executable(${PROJECT_NAME}
     servo/servo.c
     metal_detection/metal_detection.c
     motion/motion.c
+    motion/mpu6050.c
+    motion/ring_Buffer.c
     pico_irq/pico_irq.c
     buffer/buffer.c
     GPS/GPS.c
@@ -36,6 +38,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_gpio
     hardware_timer
     hardware_uart
+    hardware_i2c
     pico_multicore
     pico_cyw43_arch_lwip_threadsafe_background)
 

@@ -13,7 +13,7 @@
 
 #define rx_Gpio 9
 #define tx_Gpio 8
-#define baudrate 9600
+#define baud_Rate 9600
 #define UART_ID 1
 #define GPS_MSG_MAX_LEN 255
 

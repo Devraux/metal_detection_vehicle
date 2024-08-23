@@ -28,7 +28,7 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback);
 /// @brief metal detection
 /// @param  --
 /// @return 0 -> metal not detected, 1 -> metal detected
-void metal_Detect_Callback(void);
+void metal_Detect_Irq(void);
 
 /// @brief metal detection get average value
 /// @param timer pico sdk standard operator 

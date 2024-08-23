@@ -10,7 +10,7 @@ void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
 
     uart_inst_t *uart = uart_get_instance(UART_ID);
     GPS.uart = uart; 
-    uart_init(uart, baudrate);
+    uart_init(uart, baud_Rate);
     gpio_set_function(rx_Gpio_t, GPIO_FUNC_UART);
     gpio_set_function(tx_Gpio_t, GPIO_FUNC_UART);
 

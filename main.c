@@ -4,7 +4,7 @@
 int main() 
 {
     stdio_init_all();
-
+    mpu_init();
     //hall_Init(hall_right, &gpio_callback);
     //hall_Init(hall_left, &gpio_callback);
     //servo_init(servo_front_left);
@@ -19,7 +19,7 @@ int main()
 
 
     //metal_Detect_Init(metal_detect_gpio, &gpio_callback);
-    GPS_Init(rx_Gpio,tx_Gpio);
+    //GPS_Init(rx_Gpio,tx_Gpio);
     int num;
     int result;
     while (true) 
@@ -37,7 +37,9 @@ int main()
     
 
     //printf("\n");
-    sleep_ms(100);
+
+    //printf("Yaw: %f", mpu_Get_Yaw());
+    sleep_ms(1000);
     }
     return 0;
 }
