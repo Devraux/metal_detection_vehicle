@@ -4,26 +4,20 @@
 int main() 
 {
     stdio_init_all();
-    mpu_init();
-    //hall_Init(hall_right, &gpio_callback);
-    //hall_Init(hall_left, &gpio_callback);
-    //servo_init(servo_front_left);
-    //servo_init(servo_front_right);
-    //servo_init(servo_back_left);
-    //servo_init(servo_back_right);
 
     //udp_Init();
     //udp_Data_Send();
     //cyw43_arch_deinit();
 
 
-
+    motion_Init(servo_front_left, servo_front_right, servo_back_left, servo_back_right, hall_left, hall_right, &gpio_callback);
     //metal_Detect_Init(metal_detect_gpio, &gpio_callback);
     //GPS_Init(rx_Gpio,tx_Gpio);
     int num;
     int result;
+    float X, Y;
     while (true) 
-    {   /*
+    {   
         result = scanf("%d", &num);
     
         if (result == 1)
@@ -31,15 +25,12 @@ int main()
         else
             num = 0;
 
-            
-        */
-       
-    
+        motion_Get_XY(&X, &Y);       
+        
 
-    //printf("\n");
-
-    //printf("Yaw: %f", mpu_Get_Yaw());
-    sleep_ms(1000);
+        printf("X: %f, Y: %f\n", X, Y);
+        printf("Angle: %f\n", mpu_Get_Yaw());
+        sleep_ms(275);
     }
     return 0;
 }

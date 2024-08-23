@@ -5,6 +5,7 @@
 #include "hardware/gpio.h"
 #include "servo/servo.h"
 #include "math.h"
+#include "mpu6050.h"
 
 #define servo_front_right 10     //front - right 
 #define servo_back_right 11      //back  - right
@@ -31,7 +32,7 @@ typedef struct motion_t{
 /// @param servo_4_gpio servo 4 gpio pin
 /// @param hall_1_gpio  hall sensor gpio pin
 /// @param hall_2_gpio  hall sensor gpio pin 
-void move_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t servo_back_left_t, uint8_t servo_back_right_t, uint8_t hall_left_t, uint8_t hall_right_t, void *gpio_callback);
+void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t servo_back_left_t, uint8_t servo_back_right_t, uint8_t hall_left_t, uint8_t hall_right_t, void *gpio_callback);
 
 /// @brief hall initialization func
 /// @param gpio_num hall sensor gpio pin number
@@ -62,7 +63,12 @@ void XY_Position_Update(float angle);
 /// @brief calculate XY cartesian position
 /// @param X X position  
 /// @param Y Y position
-void get_XY_Position(float *X, float *Y);
+void motion_Get_XY(float *X, float *Y);
+
+/// @brief converter from degrees to radians 
+/// @param radians 
+/// @return 
+float deg_To_Rad(float degrees);
 
 //TODO - accelerometer compulsory
 void turn_left();

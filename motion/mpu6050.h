@@ -1,6 +1,7 @@
 #ifndef _MPU6050_
 #define _MPU6050_
 
+#include <math.h>
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
 #include "../buffer/buffer.h" 
@@ -63,9 +64,9 @@ typedef struct mpu6050_t{
 /// @param data data to write in register  
 void i2c_Write_Reg(uint8_t i2c_Address, uint8_t reg, uint8_t data);
 
-/// @brief mpu I2C initialisation
-/// @param mpu6050_t mpu6050_t data structure 
-void mpu_init(void); 
+/// @brief mpu6050 initialisation
+/// @param -
+void mpu_Init(void); 
 
 /// @brief device reset
 void mpu_Reset(void); 

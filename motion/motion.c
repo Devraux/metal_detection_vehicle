@@ -9,7 +9,7 @@ void hall_Init(uint8_t gpio_num, void *gpio_callback)
     gpio_set_irq_enabled_with_callback(gpio_num, GPIO_IRQ_EDGE_FALL, true, gpio_callback);
 }
 
-void move_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t servo_back_left_t, uint8_t servo_back_right_t, uint8_t hall_left_t, uint8_t hall_right_t, void *gpio_callback)
+void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t servo_back_left_t, uint8_t servo_back_right_t, uint8_t hall_left_t, uint8_t hall_right_t, void *gpio_callback)
 {
     servo_init(servo_front_left_t);
     servo_init(servo_front_right_t);
@@ -18,6 +18,8 @@ void move_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t 
 
     hall_Init(hall_left_t, gpio_callback);
     hall_Init(hall_right_t, gpio_callback);
+
+    mpu_Init();
 }
 
 void distance_Update(void)
@@ -43,11 +45,11 @@ float get_Distance(void)
 
 void XY_Position_Update(float angle)
 {
-    motion.current_position_X += hall_distance * cos(angle);
-    motion.current_position_Y += hall_distance * sin(angle);
+    motion.current_position_X += hall_distance * cos(deg_To_Rad(angle));
+    motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle));
 }
 
-void get_XY_Position(float *X, float *Y)
+void motion_Get_XY(float *X, float *Y)
 {
     *X = motion.current_position_X;
     *Y = motion.current_position_Y;
@@ -98,4 +100,9 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             servo_set_velocity(servo_back_right, 0); //STOP Vehicle
             motion.move_Direction = 9;
     }   
+}
+
+float deg_To_Rad(float degrees)
+{
+    return degrees * (M_PI / 180.0f);
 }
