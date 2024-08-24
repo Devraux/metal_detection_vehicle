@@ -45,8 +45,17 @@ float get_Distance(void)
 
 void XY_Position_Update(float angle)
 {
-    motion.current_position_X += hall_distance * cos(deg_To_Rad(angle));
-    motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle));
+    if(get_Move_Direction() == 0) //forward
+    {
+        motion.current_position_X += hall_distance * cos(deg_To_Rad(angle));
+        motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle));
+    }
+
+    if(get_Move_Direction() == 1) //backward
+    {
+        motion.current_position_X += hall_distance * cos(deg_To_Rad(angle + 180));
+        motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle + 180));
+    }
 }
 
 void motion_Get_XY(float *X, float *Y)
@@ -104,5 +113,9 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
 
 float deg_To_Rad(float degrees)
 {
-    return degrees * (M_PI / 180.0f);
+    if(degrees >= 360)
+        degrees = fmod(degrees, 360.0f);
+
+    float result = degrees * (M_PI / 180.0f);
+    return result;
 }
