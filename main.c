@@ -16,20 +16,81 @@ int main()
     int num;
     int result;
     float X, Y;
+
+    
+    sleep_ms(2000);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(0, 250);
+    sleep_ms(2000);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(2,250);
+    sleep_ms(1500);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(0, 250);
+    sleep_ms(2000);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());   
+
+    move(2,250);
+    sleep_ms(1500);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(0, 250);
+    sleep_ms(2000);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(2, 250);
+    sleep_ms(1500);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(0, 250);
+    sleep_ms(2000);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(2, 250);
+    sleep_ms(1500);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(4, 250); //STOP
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
     while (true) 
     {   
-        result = scanf("%d", &num);
+        //result = scanf("%d", &num);
     
-        if (result == 1)
-            move(num, 250);
-        else
-            num = 0;
+        //if (result == 1)
+        //    move(num, 250);
+        //else
+        //    move(num,0);
 
-        motion_Get_XY(&X, &Y);       
+        //motion_Get_XY(&X, &Y);       
+        
         
 
-        printf("X: %f, Y: %f\n", X, Y);
-        printf("Angle: %f\n", mpu_Get_Yaw());
+        //printf("X: %f, Y: %f\n", X, Y);
+        //printf("Angle: %f\n", mpu_Get_Yaw());
         sleep_ms(275);
     }
     return 0;
