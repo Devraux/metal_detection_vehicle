@@ -17,7 +17,7 @@ int main()
     int result;
     float X, Y;
    
-    
+     
     sleep_ms(2000);
     motion_Get_XY(&X, &Y); 
     printf("X: %f, Y: %f\n", X, Y);
