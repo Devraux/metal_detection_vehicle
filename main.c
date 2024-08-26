@@ -16,7 +16,7 @@ int main()
     int num;
     int result;
     float X, Y;
- 
+   
     
     sleep_ms(2000);
     motion_Get_XY(&X, &Y); 
