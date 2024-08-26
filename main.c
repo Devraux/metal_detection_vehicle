@@ -23,12 +23,12 @@ int main()
     printf("X: %f, Y: %f\n", X, Y);
     printf("Angle: %f\n", mpu_Get_Yaw());
 
-    move(drive_forward, 250);
-    sleep_ms(2000);
+    move(drive_backward, 250);
+    sleep_ms(4000);
     motion_Get_XY(&X, &Y); 
     printf("X: %f, Y: %f\n", X, Y);
     printf("Angle: %f\n", mpu_Get_Yaw());
-
+/*
     move(drive_right,250);
     sleep_ms(400);
     motion_Get_XY(&X, &Y); 
@@ -40,9 +40,15 @@ int main()
     motion_Get_XY(&X, &Y); 
     printf("X: %f, Y: %f\n", X, Y);
     printf("Angle: %f\n", mpu_Get_Yaw());   
-    /*
-    move(drive_left,250);
-    sleep_ms(1500);
+    
+    move(drive_backward, 250);
+    sleep_ms(2000);
+    motion_Get_XY(&X, &Y); 
+    printf("X: %f, Y: %f\n", X, Y);
+    printf("Angle: %f\n", mpu_Get_Yaw());
+
+    move(drive_left, 250);
+    sleep_ms(400);
     motion_Get_XY(&X, &Y); 
     printf("X: %f, Y: %f\n", X, Y);
     printf("Angle: %f\n", mpu_Get_Yaw());
@@ -53,24 +59,18 @@ int main()
     printf("X: %f, Y: %f\n", X, Y);
     printf("Angle: %f\n", mpu_Get_Yaw());
 
-    move(drive_left, 250);
-    sleep_ms(1500);
-    motion_Get_XY(&X, &Y); 
-    printf("X: %f, Y: %f\n", X, Y);
-    printf("Angle: %f\n", mpu_Get_Yaw());
-
     move(drive_forward, 250);
     sleep_ms(2000);
     motion_Get_XY(&X, &Y); 
     printf("X: %f, Y: %f\n", X, Y);
     printf("Angle: %f\n", mpu_Get_Yaw());
 
-    move(drive_left, 250);
-    sleep_ms(1500);
-    motion_Get_XY(&X, &Y); 
-    printf("X: %f, Y: %f\n", X, Y);
-    printf("Angle: %f\n", mpu_Get_Yaw());
-    */
+    //move(drive_left, 250);
+    //sleep_ms(1500);
+    //motion_Get_XY(&X, &Y); 
+    //printf("X: %f, Y: %f\n", X, Y);
+    //printf("Angle: %f\n", mpu_Get_Yaw());
+ */   
     move(4, 250); //STOP
     motion_Get_XY(&X, &Y); 
     printf("X: %f, Y: %f\n", X, Y);

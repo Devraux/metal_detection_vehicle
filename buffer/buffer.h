@@ -13,14 +13,28 @@ typedef struct buffer_t{
     uint32_t buffer_Size;
 }buffer_t;
 
+/// @brief  buffer initialization
+/// @param buffer buffer structure
+/// @param buffer_Data_t buffer pointer to data
+/// @param buffer_Size_t buffer size
 void buffer_Init(buffer_t *buffer, uint32_t *buffer_Data_t, uint32_t buffer_Size_t);
 
+/// @brief buffer add data
+/// @param buffer buffer structure
+/// @param data data to push
 void buffer_Add(buffer_t *buffer, uint32_t data);
 
+/// @brief buffer get data function
+/// @param buffer buffer structure
+/// @param data data pointer where data from buffer was popped
 void buffer_Get(buffer_t *buffer, uint32_t *data);
 
+/// @brief buffer clear / reset (fill buffer data with int type 0 
+/// @param buffer buffer structure
 void buffer_Clear(buffer_t *buffer);
 
+/// @brief buffer print content
+/// @param buffer buffer structure
 void buffer_print(buffer_t* buffer);
 
 #endif
