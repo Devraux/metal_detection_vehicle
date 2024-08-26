@@ -37,24 +37,24 @@ typedef struct mpu6050_Reg_t{
 }mpu6050_Reg_t;    
 
 typedef struct mpu6050_t{
-    int16_t X_Accel_Offset; 
-    int16_t Y_Accel_Offset; 
-    int16_t Z_Accel_Offset; 
+    //int16_t X_Accel_Offset; 
+    //int16_t Y_Accel_Offset; 
+    //int16_t Z_Accel_Offset; 
 
-    int16_t X_Gyro_Offset;
-    int16_t Y_Gyro_Offset;
+    //int16_t X_Gyro_Offset;
+    //int16_t Y_Gyro_Offset;
     int16_t Z_Gyro_Offset;
 
-    int16_t X_Accel_Raw_Data; 
-    int16_t Y_Accel_Raw_Data; 
-    int16_t Z_Accel_Raw_Data; 
+    //int16_t X_Accel_Raw_Data; 
+    //int16_t Y_Accel_Raw_Data; 
+    //int16_t Z_Accel_Raw_Data; 
 
     int16_t X_Gyro_Raw_Data;
     int16_t Y_Gyro_Raw_Data;
     int16_t Z_Gyro_Raw_Data;
 
-    float Pitch;
-    float Roll;
+    //float Pitch;
+    //float Roll;
     float Yaw;
 }mpu6050_t;
 

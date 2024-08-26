@@ -30,7 +30,7 @@ void distance_Update(void)
     else if(motion.move_Direction == 1) //backward
         motion.distance -= hall_distance;   // ~0.04477 meter
     
-    motion.distance_Absolute += 0.0447761;
+    motion.distance_Absolute += hall_distance;
 }
 
 uint8_t get_Move_Direction(void)
@@ -45,16 +45,16 @@ float get_Distance(void)
 
 void XY_Position_Update(float angle)
 {
-    if(get_Move_Direction() == 0) //forward
+    if(get_Move_Direction() == drive_forward)  //forward
     {
         motion.current_position_X += hall_distance * cos(deg_To_Rad(angle));
         motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle));
     }
 
-    if(get_Move_Direction() == 1) //backward
+    if(get_Move_Direction() == drive_backward) //backward
     {
-        motion.current_position_X += hall_distance * cos(deg_To_Rad(angle + 180));
-        motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle + 180));
+        motion.current_position_X += hall_distance * cos(deg_To_Rad(angle + 180.0f));
+        motion.current_position_Y += hall_distance * sin(deg_To_Rad(angle + 180.0f));
     }
 }
 
@@ -94,20 +94,26 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
         break;
 
         case 3: //right
-            servo_set_velocity(servo_front_left,  velocity_t/5);
-            servo_set_velocity(servo_front_right,-velocity_t);
-            servo_set_velocity(servo_back_left,   velocity_t/5);
-            servo_set_velocity(servo_back_right, -velocity_t);
+            servo_set_velocity(servo_front_left,  velocity_t);
+            servo_set_velocity(servo_front_right,-velocity_t/5);
+            servo_set_velocity(servo_back_left,   velocity_t);
+            servo_set_velocity(servo_back_right, -velocity_t/5);
             motion.move_Direction = 3;
 
         break;
+
+        case 4:
+            servo_set_velocity(servo_front_left, 0); //STOP Vehicle
+            servo_set_velocity(servo_front_right,0); //STOP Vehicle
+            servo_set_velocity(servo_back_left,  0); //STOP Vehicle
+            servo_set_velocity(servo_back_right, 0); //STOP Vehicle
+            motion.move_Direction = 4;
 
         default:
             servo_set_velocity(servo_front_left, 0); //STOP Vehicle
             servo_set_velocity(servo_front_right,0); //STOP Vehicle
             servo_set_velocity(servo_back_left,  0); //STOP Vehicle
             servo_set_velocity(servo_back_right, 0); //STOP Vehicle
-            motion.move_Direction = 9;
     }   
 }
 
@@ -116,6 +122,29 @@ float deg_To_Rad(float degrees)
     if(degrees >= 360)
         degrees = fmod(degrees, 360.0f);
 
+    if(degrees < 0)
+        degrees = fmod(degrees + 360.0f, 360.0f);
+
     float result = degrees * (M_PI / 180.0f);
     return result;
 }
+
+void turn_Left()
+{
+    float current_Angle = mpu_Get_Yaw();
+    while(mpu_Get_Yaw() <= current_Angle + 90.0f)
+        move(drive_left, 250);
+    move(drive_stop, 0); //STOP
+}
+
+void turn_Right()
+{
+    float current_Angle = mpu_Get_Yaw();
+    while(mpu_Get_Yaw() >= current_Angle - 90.0f)
+        move(drive_right, 250);
+    move(drive_stop, 0); //STOP
+}
+
+/// @todo
+//void drive_Forward();  bad function name
+//void drive_Backward(); bad function name

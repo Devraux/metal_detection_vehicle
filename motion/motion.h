@@ -7,14 +7,20 @@
 #include "math.h"
 #include "mpu6050.h"
 
-#define servo_front_right 10     //front - right 
-#define servo_back_right 11      //back  - right
-#define servo_back_left 12       //back  - left
-#define servo_front_left 13      //front - left
+#define servo_front_right 10   //front <-> right 
+#define servo_back_right  11   //back  <-> right
+#define servo_back_left   12   //back  <-> left
+#define servo_front_left  13   //front <-> left
 
-#define hall_right 16            //right hall sensor
-#define hall_left 17             //left hall sensor
-#define hall_distance 0.0447761  //traveled distance between hall sensor irq's
+#define hall_right 16          //right hall sensor
+#define hall_left  17          //left hall sensor
+#define hall_distance 0.05f    //traveled distance between hall sensor irq's
+
+#define drive_forward   0
+#define drive_backward  1
+#define drive_left      2
+#define drive_right     3
+#define drive_stop      4
 
 typedef struct motion_t{
     float    distance;
@@ -52,7 +58,7 @@ float get_Distance(void);
 uint8_t get_Move_Direction(void);
 
 /// @brief causes robot movement and provides soft-start
-/// @param move_direction_t 0-> forward 1-> back 2->left 3->right
+/// @param move_direction_t 0-> forward 1-> back 2->left 3->right 4 -> STOP
 /// @param velocity_t vehicle to set velocity
 void move(uint8_t move_direction_t, int16_t velocity_t);
 
@@ -70,8 +76,16 @@ void motion_Get_XY(float *X, float *Y);
 /// @return 
 float deg_To_Rad(float degrees);
 
-//TODO - accelerometer compulsory
-void turn_left();
-void turn_right();
+/// @brief Turn left based on accelerometer
+/// @param -
+void turn_Left(void);
+
+/// @brief Turn Right based on accelerometer
+/// @param -
+void turn_Right(void);
+
+//TODO
+//void drive_Forward();  bad function name
+//void drive_Backward(); bad function name
 
 #endif

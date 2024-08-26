@@ -47,6 +47,7 @@ void mpu_Init(void)
     i2c_Write_Reg(mpu6050_Reg.address, mpu6050_Reg.acc_config, Accel_Resolution); //±2g
     i2c_Write_Reg(mpu6050_Reg.address, mpu6050_Reg.gyro_res, Gyro_Resolution);    //±250deg/sec
     mpu_Get_Offset();
+    mpu6050.Yaw = 90.0f; // initial angle is 90* <-> not 0 !!!
 
     //MPU6050 INTERRUPT INIT
     add_repeating_timer_ms(-250, mpu_Read, NULL, &timer); // 4 times per second
@@ -64,13 +65,13 @@ void mpu_Read_Raw(void)
 {
     uint8_t buffer[6];
 
-    //ACCELERATION
-    i2c_write_blocking(i2c1, mpu6050_Reg.address, &mpu6050_Reg.accel_add, 1, true); 
-    i2c_read_blocking(i2c1, mpu6050_Reg.address, buffer, 6, false);
+    //ACCELERATION -> Acceleration not used in this project
+    //i2c_write_blocking(i2c1, mpu6050_Reg.address, &mpu6050_Reg.accel_add, 1, true); 
+    //i2c_read_blocking(i2c1, mpu6050_Reg.address, buffer, 6, false);
 
-    mpu6050.X_Accel_Raw_Data = (buffer[0] << 8) | buffer[1];
-    mpu6050.Y_Accel_Raw_Data = (buffer[2] << 8) | buffer[3];
-    mpu6050.Z_Accel_Raw_Data = (buffer[4] << 8) | buffer[5];
+    //mpu6050.X_Accel_Raw_Data = (buffer[0] << 8) | buffer[1];
+    //mpu6050.Y_Accel_Raw_Data = (buffer[2] << 8) | buffer[3];
+    //mpu6050.Z_Accel_Raw_Data = (buffer[4] << 8) | buffer[5];
 
     //GYROSCOPE
     i2c_write_blocking(i2c1,mpu6050_Reg.address, &mpu6050_Reg.gyro_add, 1, true);
@@ -110,7 +111,11 @@ bool mpu_Read(struct repeating_timer *timer)
     mpu6050.Yaw += Z_Gyro * 0.250f;
 
     if(mpu6050.Yaw >= 360.0f)
-        mpu6050.Yaw = fmod(mpu6050.Yaw, 360.0f);;
+        mpu6050.Yaw = fmod(mpu6050.Yaw, 360.0f);
+
+    else if(mpu6050.Yaw <= 0.0f)
+    mpu6050.Yaw = fmod(mpu6050.Yaw + 360.0f, 360.0f);
+
     return true;
 }
 
