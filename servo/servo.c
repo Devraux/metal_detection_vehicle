@@ -22,12 +22,13 @@ void servo_set_velocity(uint8_t gpio_num, int16_t velocity)
     if(gpio_num == 10 || gpio_num == 11)
         velocity = -velocity;
  
+
     velocity += 750;
 
-    if(velocity <= 500)      //500 -> Ton = 1ms
+    if(velocity <= 500)       //500 -> Ton = 1ms
         velocity = 500;
 
-    else if(velocity >= 1000) //500 -> Ton = 2ms
+    else if(velocity >= 1000) //1000 -> Ton = 2ms
         velocity = 1000;
         
     pwm_set_gpio_level(gpio_num, velocity);

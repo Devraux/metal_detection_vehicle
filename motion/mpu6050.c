@@ -47,7 +47,7 @@ void mpu_Init(void)
     i2c_Write_Reg(mpu6050_Reg.address, mpu6050_Reg.acc_config, Accel_Resolution); //±2g
     i2c_Write_Reg(mpu6050_Reg.address, mpu6050_Reg.gyro_res, Gyro_Resolution);    //±250deg/sec
     mpu_Get_Offset();
-    mpu6050.Yaw = 90.0f; // initial angle is 90* <-> not 0 !!!
+    mpu6050.Yaw = 90.0f; // initial angle is 90* <-> not 0 !!! <->  cartesian coordinate system
 
     //MPU6050 INTERRUPT INIT
     add_repeating_timer_ms(-250, mpu_Read, NULL, &timer); // 4 times per second

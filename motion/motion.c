@@ -25,10 +25,10 @@ void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_
 void distance_Update(void)
 {
     if(motion.move_Direction == 0)      // forward
-        motion.distance += hall_distance;   // ~0.04477 meter
+        motion.distance += hall_distance;   // ~0.05 meter
 
     else if(motion.move_Direction == 1) //backward
-        motion.distance -= hall_distance;   // ~0.04477 meter
+        motion.distance -= hall_distance;   // ~0.05 meter
     
     motion.distance_Absolute += hall_distance;
 }
