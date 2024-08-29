@@ -8,7 +8,7 @@
 
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
-#include "lwip/init.h"        // Dodaj ten nagłówek
+#include "lwip/init.h"        
 #include "lwip/netif.h"
 #include "lwip/ip_addr.h"
 #include "lwip/udp.h"
@@ -40,12 +40,21 @@ typedef struct __attribute__((packed)){
     int16_t velocity;                  //Vehicle velocity command
 }server_To_Pico_Frame_t;
 
-void UDP_Init(struct udp_pcb **pcb, uint16_t port, void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t));
 
-void UDP_Send_Data(struct udp_pcb *pcb ,const ip_addr_t *server_Ip, uint16_t port, const pico_To_Server_Frame_t *frame);
+/// @brief UDP receive initialization
+/// @param pcb UDP configuration structure
+/// @param port UDP Port
+/// @param recv_callback callback function called whenever data is received
+void UDP_Receive_Init(uint16_t port, void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t));
 
-/// @brief 
-/// @param port
+/// @brief UDP send data 
+/// @param server_Ip server ip 
+/// @param port UDP Port
+/// @param frame data frame to send
+void UDP_Send_Data(const ip_addr_t *server_Ip, uint16_t port, const pico_To_Server_Frame_t *frame);
+
+/// @brief callback function called whenever data is received
+/// @param port UDP port
 /// @param arg additional data - not used
 /// @param pcb udp configuration structure
 /// @param p received data
@@ -53,12 +62,17 @@ void UDP_Send_Data(struct udp_pcb *pcb ,const ip_addr_t *server_Ip, uint16_t por
 /// @param port data sender port
 void UDP_Receive_Callback(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *addr, u16_t port);
 
-void core_1_entry();
+/// @brief pico hardware(like cyw43) initialization
+/// @param ssid SSID
+/// @param password PASSWORD
+void pico_Hardware_wifi_Init(const char* ssid, const char* password);
 
-void core_1_entry();
+/// @brief core 1 entry
+/// @param - 
+void core_1_Entry(void);
 
-void wifi_Init(void);
-
+/// @brief pi pico wifi transmission initialization
+/// @param -  
 void pico_Wifi_Transmission_Init(void);
 #endif
 
