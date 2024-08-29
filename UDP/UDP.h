@@ -13,9 +13,9 @@
 #include "lwip/ip_addr.h"
 #include "lwip/udp.h"
 #include "pico/cyw43_arch.h"
+#include "pico/util/queue.h"
 
 #define UDP_port 4444
-//#define server_ip "192.168.1.1"
 
 typedef struct __attribute__((packed)) {
     bool status;                       //Pi pico status -> 1-Active, 2-inactive
@@ -40,18 +40,17 @@ typedef struct __attribute__((packed)){
     int16_t velocity;                  //Vehicle velocity command
 }server_To_Pico_Frame_t;
 
+extern queue_t queue;
 
 /// @brief UDP receive initialization
 /// @param pcb UDP configuration structure
-/// @param port UDP Port
 /// @param recv_callback callback function called whenever data is received
-void UDP_Receive_Init(uint16_t port, void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t));
+void UDP_Receive_Init(void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t));
 
 /// @brief UDP send data 
 /// @param server_Ip server ip 
-/// @param port UDP Port
 /// @param frame data frame to send
-void UDP_Send_Data(const ip_addr_t *server_Ip, uint16_t port, const pico_To_Server_Frame_t *frame);
+void UDP_Send_Data(const pico_To_Server_Frame_t *frame);
 
 /// @brief callback function called whenever data is received
 /// @param port UDP port
@@ -73,6 +72,8 @@ void core_1_Entry(void);
 
 /// @brief pi pico wifi transmission initialization
 /// @param -  
-void pico_Wifi_Transmission_Init(void);
+void pico_Wifi_Transmission_Init(const char* ssid, const char* password);
+
+void UDP_Queue_init(uint32_t queue_Size);
 #endif
 
