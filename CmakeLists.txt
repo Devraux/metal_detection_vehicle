@@ -17,7 +17,8 @@ add_executable(${PROJECT_NAME}
     pico_irq/pico_irq.c
     buffer/buffer.c
     GPS/GPS.c
-    UDP/UDP.c)
+    UDP/UDP.c
+    robot_Boot_Strap/robot_Boot_Strap.c)
     
 
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
@@ -36,7 +37,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/pico_irq      
     ${CMAKE_SOURCE_DIR}/buffer        
     ${CMAKE_SOURCE_DIR}/GPS           
-    ${CMAKE_SOURCE_DIR}/UDP          
+    ${CMAKE_SOURCE_DIR}/UDP    
+    ${CMAKE_SOURCE_DIR}/robot_Boot_Strap      
 )
 
 

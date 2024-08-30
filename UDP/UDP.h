@@ -18,7 +18,7 @@
 #define UDP_port 4444
 
 typedef struct __attribute__((packed)) {
-    bool status;                       //Pi pico status -> 1-Active, 2-inactive
+    bool status;                       //Pi pico status -> 0-Active, 1-inactive
     
     float MPU_X;                       //MPU gyroscope calculated X current coordinate
     float MPU_Y;                       //MPU gyroscope calculated Y current coordinate
