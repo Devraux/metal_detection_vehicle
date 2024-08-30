@@ -13,7 +13,7 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
 
     uint32_t *buffer_data = (uint32_t*)malloc(450 * sizeof(uint32_t)); // redundancy - 450 samples
     buffer_Init(&buffer, buffer_data, 450);   
-    add_repeating_timer_ms(-210, compute_Detections_Data, NULL, &timer);  // ~5 times per second
+    add_repeating_timer_ms(-215, compute_Detections_Data, NULL, &timer);  // ~5 times per second
 }
 
 void metal_Detect_Irq(void)
@@ -45,7 +45,7 @@ static void check_Metal_Detect(void)
     if(metal_detection_avg_t != metal_detect_data.detection_Average)
     {
         metal_detect_data.metal_Detected = true;
-        metal_detect_data.detected_Metal_Counter++;
+        //metal_detect_data.detected_Metal_Counter++;
     }
 
     else        

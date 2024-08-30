@@ -34,7 +34,7 @@ typedef struct __attribute__((packed)) {
 	uint32_t GPS_Longitude_Direction;  //GPS current Longitude Direction
  
     bool metal_Detection;              //1 -> metal detected 0 otherwise
-    uint32_t metal_Detection_Counter;  //metal Detection Counter 
+    //uint32_t metal_Detection_Counter;  //metal Detection Counter 
 }pico_To_Server_Frame_t; 
 
 typedef struct __attribute__((packed)){

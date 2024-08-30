@@ -1,5 +1,17 @@
 #include "pico_irq.h"
 
+void irq_Init(void)
+{
+    irq_set_priority(UART0_IRQ, 10);     //UART NVIC configuration
+    irq_set_priority(UART1_IRQ, 10);     //GPIO NVIC configuration
+
+    irq_set_priority(TIMER_IRQ_0, 9);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_1, 9);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_2, 9);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_3, 9);   //TIMER NVIC configuration
+
+    irq_set_priority(IO_IRQ_BANK0, 0);  //GPIO NVIC configuration
+}
 
 void gpio_callback(uint gpio, uint32_t events)
 {
