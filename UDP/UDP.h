@@ -16,6 +16,9 @@
 #include "pico/util/queue.h"
 
 #define UDP_port 4444
+#define server_IP "192.168.137.1"
+#define SSID "krzysztofplonka"
+#define PASSWORD "82K67?0f"
 
 typedef struct __attribute__((packed)) {
     bool status;                       //Pi pico status -> 0-Active, 1-inactive
@@ -35,7 +38,7 @@ typedef struct __attribute__((packed)) {
 }pico_To_Server_Frame_t; 
 
 typedef struct __attribute__((packed)){
-    bool status;                       //Server status -> 1-Active, 2-inactive
+    bool status;                       //Server status -> 0-Active, 1-inactive
     uint8_t direction;                 //Vehicle direction command
     int16_t velocity;                  //Vehicle velocity command
 }server_To_Pico_Frame_t;
@@ -76,5 +79,6 @@ void pico_Wifi_Transmission_Init(const char* ssid, const char* password);
 
 void UDP_Queue_init(uint32_t queue_Size);
 
+void print_Ip_Address();
 #endif
 

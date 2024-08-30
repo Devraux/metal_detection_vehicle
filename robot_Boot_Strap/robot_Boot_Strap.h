@@ -10,7 +10,6 @@
 #include "../UDP/UDP.h"
 
 
-
 /// @brief robot all sensors and other code initialization
 /// @param  --
 void robot_Boot_Strap(void);

@@ -1,7 +1,7 @@
 #include "robot_Boot_Strap.h"
 
 static struct repeating_timer timer;
-static pico_To_Server_Frame_t pico_To_Servo_Data[30] = {0};
+static pico_To_Server_Frame_t pico_To_Server_Data[30] = {0};
 static GPS_t GPS_Data; //GPS Data
 
 static float X = 0.0f, Y = 0.0f;
@@ -25,36 +25,37 @@ void robot_Boot_Strap(void)
 bool period_Robot_Measurements(struct repeating_timer *timer)
 {
     GPS_Get_Info(&GPS_Data);
-    pico_To_Servo_Data[data_Frame_Counter].GPS_Latitude = GPS_Data.Latitude;
-    pico_To_Servo_Data[data_Frame_Counter].GPS_Latitude_dec =  GPS_Data.Latitude_dec;
-    pico_To_Servo_Data[data_Frame_Counter].GPS_Latitude_Direction = GPS_Data.Latitude_Direction;
-    pico_To_Servo_Data[data_Frame_Counter].GPS_Longitude =  GPS_Data.Longitude;
-    pico_To_Servo_Data[data_Frame_Counter].GPS_Longitude_dec =  GPS_Data.Longitude_dec;
-    pico_To_Servo_Data[data_Frame_Counter].GPS_Longitude_Direction =  GPS_Data.Longitude_Direction;
+    pico_To_Server_Data[data_Frame_Counter].GPS_Latitude = GPS_Data.Latitude;
+    pico_To_Server_Data[data_Frame_Counter].GPS_Latitude_dec =  GPS_Data.Latitude_dec;
+    pico_To_Server_Data[data_Frame_Counter].GPS_Latitude_Direction = GPS_Data.Latitude_Direction;
+    pico_To_Server_Data[data_Frame_Counter].GPS_Longitude =  GPS_Data.Longitude;
+    pico_To_Server_Data[data_Frame_Counter].GPS_Longitude_dec =  GPS_Data.Longitude_dec;
+    pico_To_Server_Data[data_Frame_Counter].GPS_Longitude_Direction =  GPS_Data.Longitude_Direction;
 
-    pico_To_Servo_Data[data_Frame_Counter].metal_Detection = get_Metal_Detection_Status();
-    pico_To_Servo_Data[data_Frame_Counter].metal_Detection_Counter = get_Metal_Detection_Counter();
+    pico_To_Server_Data[data_Frame_Counter].metal_Detection = get_Metal_Detection_Status();
+    pico_To_Server_Data[data_Frame_Counter].metal_Detection_Counter = get_Metal_Detection_Counter();
 
     motion_Get_XY(&X, &Y);
-    pico_To_Servo_Data[data_Frame_Counter].MPU_X = X;
-    pico_To_Servo_Data[data_Frame_Counter].MPU_X = Y;
+    pico_To_Server_Data[data_Frame_Counter].MPU_X = X;
+    pico_To_Server_Data[data_Frame_Counter].MPU_X = Y;
 
-    pico_To_Servo_Data[data_Frame_Counter].status = 0; //everything goes good
+    pico_To_Server_Data[data_Frame_Counter].status = 0; //everything goes good
   
     data_Frame_Counter++;
 
 
-    if(data_Frame_Counter >= 8)
+    if(data_Frame_Counter >= 8) //send data to server once per ~2 seconds
     {
         data_Send();
         data_Frame_Counter = 0;
+        memset(pico_To_Server_Data, 0, sizeof(pico_To_Server_Data));  //clear sended data 
     } 
-
 
     return true;
 }
 
 void data_Send(void)
 {
-
+    for(uint32_t i = 0; i < data_Frame_Counter; i++)
+        UDP_Send_Data(&pico_To_Server_Data[i]);
 }

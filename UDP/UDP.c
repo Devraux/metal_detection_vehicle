@@ -2,8 +2,8 @@
 
 static server_To_Pico_Frame_t server_TO_Pico_Data = {0};
 static pico_To_Server_Frame_t pico_To_Server_Data = {0};
-static struct udp_pcb* send_pcb = NULL;
-static struct udp_pcb* receive_pcb = NULL;
+static struct udp_pcb *send_pcb = NULL;
+static struct udp_pcb *receive_pcb = NULL;
 ip_addr_t server_Ip;
 queue_t queue;
 
@@ -29,9 +29,6 @@ void UDP_Receive_Init(void (*recv_callback)(void *, struct udp_pcb *, struct pbu
 
 void UDP_Send_Data(const pico_To_Server_Frame_t *frame)
 {   
-    if (send_pcb == NULL) 
-        send_pcb = udp_new();
-    
     struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, sizeof(pico_To_Server_Frame_t), PBUF_RAM);
 
     if(p != NULL)
@@ -70,26 +67,17 @@ void pico_Hardware_wifi_Init(const char* ssid, const char* password)
         return;
     }
 
-    struct netif* netif = netif_list;
-    while (netif != NULL)
+    ip4addr_aton(server_IP, &server_Ip);
+    
+    send_pcb = udp_new();
+    if (!send_pcb)
     {
-        if(netif_is_up(netif))
-            break;  
-        netif = netif->next;
+        printf("Failed to create UDP PCB\n");
+        return;
     }
 
-    if(netif != NULL)
-    {
-        server_Ip.addr = netif->ip_addr.addr;
-        printf("WiFi connected successfully. IP address: %s\n", ip4addr_ntoa(&server_Ip));
-    }
-    
-    else 
-        printf("Failed to get IP address\n");
-    
-    lwip_init();
+    print_Ip_Address();
 }
-
 
 void core_1_Entry(void)
 {
@@ -103,13 +91,25 @@ void pico_Wifi_Transmission_Init(const char* ssid, const char* password)
 {
     pico_Hardware_wifi_Init(ssid, password);
     sleep_ms(1000); //waiting for ip address
-    multicore_launch_core1(core_1_Entry);
+    //multicore_launch_core1(core_1_Entry);
 
-    UDP_Queue_init(10);
+    //UDP_Queue_init(10);
 }
-
 
 void UDP_Queue_init(uint32_t queue_Size)
 {
     queue_init(&queue, sizeof(server_To_Pico_Frame_t), queue_Size);
+}
+
+void print_Ip_Address()
+{
+    struct netif *netif = netif_list;
+    while (netif != NULL) {
+        if (netif_is_up(netif) && netif->ip_addr.addr != 0) {
+            printf("IP address: %s\n", ip4addr_ntoa((ip4_addr_t *)&netif->ip_addr));
+            return;
+        }
+        netif = netif->next;
+    }
+    printf("Unable to get IP address\n");
 }
