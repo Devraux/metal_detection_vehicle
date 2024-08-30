@@ -11,18 +11,18 @@
 #include "hardware/gpio.h"
 #include "hardware/irq.h"
 
-/**
- * @brief servo_init pwm slice init
- * @param gpio_num  GPIO NUMBER
- */
-void servo_init(uint8_t gpio_num);
 
-/**
- * @brief servo_set_velocity
- * @param gpio_num gpio number
- * @param velocity value from -250 to 250
- */
-void servo_set_velocity(uint8_t gpio_num, int16_t velocity);
+
+/// @brief servo initialization
+/// @param gpio_num Pi Pico GPIO number  
+void servo_Init(uint8_t gpio_num);
+
+
+/// @brief servo_set_velocity
+/// @param gpio_num gpio number
+/// @param velocity value from -250 to 250
+/// @note in most cases it is recommended to use maximum velocity eg. 250 or -250 
+void servo_Set_Velocity(uint8_t gpio_num, int16_t velocity);
  
 
 

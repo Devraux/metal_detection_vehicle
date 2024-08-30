@@ -22,7 +22,7 @@ void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
     buffer_Init(&nmea_Frame_Buffer, nmea_Frame_Buffer_Data, GPS_MSG_MAX_LEN);
 }
 
-void uart_Handler(void)
+static void uart_Handler(void)
 {
     while(uart_is_readable(GPS.uart))
     {
@@ -43,7 +43,7 @@ void uart_Handler(void)
     }
 }
 
-void NMEA_FRAME_PARSE(void)
+static void NMEA_FRAME_PARSE(void)
 { 
     if(nmea_Frame_Buffer.buffer_Data[4] == (uint32_t)'M' && nmea_Frame_Buffer.buffer_Data[5] == (uint32_t)'C')
     {
@@ -92,13 +92,13 @@ void NMEA_FRAME_PARSE(void)
     //printf("\n -====================-\n");
    }
 
-uint32_t merge_2(uint32_t digit_1, uint32_t digit_2)
+static uint32_t merge_2(uint32_t digit_1, uint32_t digit_2)
 {
     uint32_t result = (digit_1 << 3) + (digit_1 << 1) + digit_2;
     return result;
 }
 
-uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3)
+static uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3)
 {
     uint32_t result = 0;
 
@@ -109,7 +109,7 @@ uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3)
     return result;
 }
 
-uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4)
+static uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4)
 {
     uint32_t result = 0;
 
@@ -121,7 +121,7 @@ uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t 
     return result;
 }
 
-uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4, uint32_t digit_5)
+static uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4, uint32_t digit_5)
 {    
     uint32_t result = 0;
 
@@ -134,13 +134,13 @@ uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t 
     return result;
 }
 
-void ASCII_Convert(uint32_t *data, uint32_t data_Size)
+static void ASCII_Convert(uint32_t *data, uint32_t data_Size)
 {
     for(uint32_t i = 0; i < data_Size; i++)
         data[i] -= '0';
 }
 
-void get_GPS_Info(GPS_t *GPS_Struct)
+void GPS_Get_Info(GPS_t *GPS_Struct)
 {
     memcpy(GPS_Struct, &GPS, sizeof(GPS_t));
 }

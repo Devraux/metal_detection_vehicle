@@ -1,5 +1,7 @@
 #include "ring_Buffer.h"
 
+/// THIS LIBRARY IS NOT USED AND CAN CONTAIN SOME BUGS AND UNTESTED CODE /// 
+
 void ring_Buffer_Init(ring_Buffer_t* ring_Buffer_t, uint16_t buffer_size)
 {
     ring_Buffer_t->DataX = (int32_t*)calloc(buffer_size * sizeof(int32_t), buffer_size);

@@ -30,16 +30,22 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback);
 /// @return 0 -> metal not detected, 1 -> metal detected
 void metal_Detect_Irq(void);
 
-/// @brief metal detection get average value
+/// @brief compute metal detections data
 /// @param timer pico sdk standard operator 
 /// @return average time between metal detector generator edges
-bool metal_Detect_Get_Avg(struct repeating_timer *timer);
+static bool compute_Detections_Data(struct repeating_timer *timer);
 
 /// @brief checks whether metal is occurred
 /// @param  --
-void check_Metal_Detect(void);
+static void check_Metal_Detect(void);
 
-/// @brief getter function
-/// @param  metal_detect_data_struct metal detector data structure
-void get_Metal_Info(metal_detect_data_t *metal_detect_data_struct);
+/// @brief checks whether metal has been detected
+/// @param --
+/// @return true -> metal detected, false -> metal not detected
+bool get_Metal_Detection_Status(void);
+
+/// @brief return metal detections
+/// @param  --
+/// @return number of metal detections
+uint32_t get_Metal_Detection_Counter(void);
 #endif

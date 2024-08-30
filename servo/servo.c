@@ -1,6 +1,7 @@
 #include "servo.h"
 
-void servo_init(uint8_t gpio_num)
+
+void servo_Init(uint8_t gpio_num)
 {
     uint8_t slice_number = pwm_gpio_to_slice_num(gpio_num);
 
@@ -11,7 +12,7 @@ void servo_init(uint8_t gpio_num)
     pwm_set_wrap(slice_number, 10000 - 1); // 10000 -> pwm_freq = 50Hz
 }
 
-void servo_set_velocity(uint8_t gpio_num, int16_t velocity)
+void servo_Set_Velocity(uint8_t gpio_num, int16_t velocity)
 {
     if(velocity == 0)
     {

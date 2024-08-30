@@ -62,7 +62,7 @@ typedef struct mpu6050_t{
 /// @param i2c_address device address
 /// @param reg device register(place to write data)
 /// @param data data to write in register  
-void i2c_Write_Reg(uint8_t i2c_Address, uint8_t reg, uint8_t data);
+static void i2c_Write_Reg(uint8_t i2c_Address, uint8_t reg, uint8_t data);
 
 /// @brief mpu6050 initialisation
 /// @param -

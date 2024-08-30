@@ -27,7 +27,7 @@ static mpu6050_t mpu6050 = {0};
 
 static struct repeating_timer timer;
 
-void i2c_Write_Reg(uint8_t i2c_Address, uint8_t reg, uint8_t data)
+static void i2c_Write_Reg(uint8_t i2c_Address, uint8_t reg, uint8_t data)
 {
     uint8_t array[] = {reg, data};
     i2c_write_blocking(i2c1, i2c_Address, array, sizeof(array)/sizeof(array[0]), false);

@@ -62,13 +62,34 @@ void pico_Hardware_wifi_Init(const char* ssid, const char* password)
 {
     cyw43_arch_init();
     cyw43_arch_enable_sta_mode();
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid, password, CYW43_AUTH_WPA2_AES_PSK, 10000) != 0) {
+
+    int result = cyw43_arch_wifi_connect_timeout_ms(ssid, password, CYW43_AUTH_WPA2_AES_PSK, 10000);
+    
+    if (result != 0) {
         printf("WiFi connection failed!\n");
         return;
     }
 
+    struct netif* netif = netif_list;
+    while (netif != NULL)
+    {
+        if(netif_is_up(netif))
+            break;  
+        netif = netif->next;
+    }
+
+    if(netif != NULL)
+    {
+        server_Ip.addr = netif->ip_addr.addr;
+        printf("WiFi connected successfully. IP address: %s\n", ip4addr_ntoa(&server_Ip));
+    }
+    
+    else 
+        printf("Failed to get IP address\n");
+    
     lwip_init();
 }
+
 
 void core_1_Entry(void)
 {
@@ -81,12 +102,14 @@ void core_1_Entry(void)
 void pico_Wifi_Transmission_Init(const char* ssid, const char* password)
 {
     pico_Hardware_wifi_Init(ssid, password);
+    sleep_ms(1000); //waiting for ip address
     multicore_launch_core1(core_1_Entry);
 
-    IP4_ADDR(&server_Ip, 192, 168, 1, 3);
+    UDP_Queue_init(10);
 }
+
 
 void UDP_Queue_init(uint32_t queue_Size)
 {
-    queue_init(&queue, sizeof(server_To_Pico_Frame_t), 10);
+    queue_init(&queue, sizeof(server_To_Pico_Frame_t), queue_Size);
 }

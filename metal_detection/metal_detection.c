@@ -13,7 +13,7 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
 
     uint32_t *buffer_data = (uint32_t*)malloc(450 * sizeof(uint32_t)); // redundancy - 450 samples
     buffer_Init(&buffer, buffer_data, 450);   
-    add_repeating_timer_ms(-200, metal_Detect_Get_Avg, NULL, &timer);  // 5 times per second
+    add_repeating_timer_ms(-210, compute_Detections_Data, NULL, &timer);  // ~5 times per second
 }
 
 void metal_Detect_Irq(void)
@@ -23,11 +23,10 @@ void metal_Detect_Irq(void)
     uint32_t elapsed_time = current_edge_time - previous_edge_time;
     previous_edge_time = current_edge_time;
 
-    buffer_Add(&buffer, elapsed_time);
-    static uint32_t data_Counter = 0;   
+    buffer_Add(&buffer, elapsed_time);  
 }
 
-bool metal_Detect_Get_Avg(struct repeating_timer *timer)
+static bool compute_Detections_Data(struct repeating_timer *timer)
 {
     uint32_t sum = 0;
     for(uint32_t i = 0; i < buffer.buffer_Size; i++)
@@ -39,7 +38,7 @@ bool metal_Detect_Get_Avg(struct repeating_timer *timer)
     return true;
 }
 
-void check_Metal_Detect(void)
+static void check_Metal_Detect(void)
 {
     static uint32_t metal_detection_avg_t = 0; 
 
@@ -56,7 +55,12 @@ void check_Metal_Detect(void)
 
 }
 
-void get_Metal_Info(metal_detect_data_t *metal_detect_data_struct)
+bool get_Metal_Detection_Status(void)
 {
-    memcpy(metal_detect_data_struct, &metal_detect_data, sizeof(metal_detect_data_t));
+    return metal_detect_data.metal_Detected;
+}
+
+uint32_t get_Metal_Detection_Counter(void)
+{
+    return metal_detect_data.detected_Metal_Counter;
 }

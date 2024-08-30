@@ -58,35 +58,31 @@ typedef struct GPS_t{
 /// @param tx_Gpio_t - tx GPIO PIN
 void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t);
 
-/// @brief TODO
-/// @param GPS 
-void GPS_read(GPS_t *GPS);
-
 /// @brief PI PICO UART IRQ HANDLER
 /// @param  -
-void uart_Handler(void);
+static void uart_Handler(void);
 
 /// @brief parse received frame and save result in GPS data structure 
 /// @param -
-void NMEA_FRAME_PARSE(void);
+static void NMEA_FRAME_PARSE(void);
 
 /// @brief merge 2 digits for example: a = 1, b = 2, result = 12 
 /// @param digit_1 first digit
 /// @param digit_2 second digit
-uint32_t merge_2(uint32_t digit_1, uint32_t digit_2);
+static uint32_t merge_2(uint32_t digit_1, uint32_t digit_2);
 
 /// @brief merge 3 digits for example: a = 1, b = 2, c = 3, result = 123 
 /// @param digit_1 first digit
 /// @param digit_2 second digit
 /// @param digit_3 third digit
-uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3);
+static uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3);
 
 /// @brief merge 4 digits for example: a = 1, b = 2, c = 3, d = 4, result = 1234 
 /// @param digit_1 first digit
 /// @param digit_2 second digit
 /// @param digit_3 third digit
 /// @param digit_4 fourth digit 
-uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4);
+static uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4);
 
 /// @brief merge 5 digits for example: a = 1, b = 2, c = 3, d = 4, e = 5 result = 1234 5
 /// @param digit_1 first digit
@@ -94,12 +90,12 @@ uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t 
 /// @param digit_3 third digit
 /// @param digit_4 fourth digit 
 /// @param digit_5 fifth digit
-uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4, uint32_t digit_5);
+static uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4, uint32_t digit_5);
 
 /// @brief convert data from ASCII to uint32_t
 /// @param data input data
 /// @param data_Size size of data
-void ASCII_Convert(uint32_t *data, uint32_t data_Size);
+static void ASCII_Convert(uint32_t *data, uint32_t data_Size);
 
-void get_GPS_Info(GPS_t *GPS_Struct);
+void GPS_Get_Info(GPS_t *GPS_Struct);
 #endif
