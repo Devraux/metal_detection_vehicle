@@ -19,7 +19,4 @@ void robot_Boot_Strap(void);
 /// @return true if measurements goes correct false otherwise
 bool period_Robot_Measurements(struct repeating_timer *timer);
 
-/// @brief send all collected data from robot device to server(computer/PC)
-/// @param  --
-void data_Send(void);
 #endif

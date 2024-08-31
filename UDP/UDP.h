@@ -19,6 +19,11 @@
 #define server_IP "192.168.137.1"
 #define SSID "krzysztofplonka"
 #define PASSWORD "82K67?0f"
+#define server_to_pico_queue_size 1
+#define pico_to_server_queue_size 8
+
+extern queue_t queue_Server_To_Pico;
+extern queue_t queue_Pico_To_Server;
 
 typedef struct __attribute__((packed)) {
     bool status;                       //Pi pico status -> 0-Active, 1-inactive
@@ -43,7 +48,6 @@ typedef struct __attribute__((packed)){
     int16_t velocity;                  //Vehicle velocity command
 }server_To_Pico_Frame_t;
 
-extern queue_t queue;
 
 /// @brief UDP receive initialization
 /// @param pcb UDP configuration structure
@@ -73,12 +77,16 @@ void pico_Hardware_wifi_Init(const char* ssid, const char* password);
 /// @param - 
 void core_1_Entry(void);
 
-/// @brief pi pico wifi transmission initialization
-/// @param -  
+/// @brief pi pico wifi transmission initialization <-> initialize cyw43 and sdk queues
+/// @param --
 void pico_Wifi_Transmission_Init(const char* ssid, const char* password);
 
-void UDP_Queue_init(uint32_t queue_Size);
+/// @brief initialize receiver and sender Queues
+/// @param -- 
+void UDP_Queue_init(void);
 
-void print_Ip_Address();
+/// @brief print Pi Pico IP address
+/// @param -- 
+void print_Ip_Address(void);
 #endif
 

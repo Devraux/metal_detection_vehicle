@@ -4,8 +4,12 @@ static server_To_Pico_Frame_t server_TO_Pico_Data = {0};
 static pico_To_Server_Frame_t pico_To_Server_Data = {0};
 static struct udp_pcb *send_pcb = NULL;
 static struct udp_pcb *receive_pcb = NULL;
-ip_addr_t server_Ip;
-queue_t queue;
+static ip_addr_t server_Ip;
+queue_t queue_Server_To_Pico;
+queue_t queue_Pico_To_Server;
+
+static server_To_Pico_Frame_t server_To_Pico_Data_Buffer;
+static pico_To_Server_Frame_t pico_To_Server_Data_Buffer;
 
 
 void UDP_Receive_Init(void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t)) 
@@ -49,8 +53,8 @@ void UDP_Receive_Callback(void *arg, struct udp_pcb *pcb, struct pbuf *p, const 
         memcpy(&received_data, p->payload, sizeof(server_To_Pico_Frame_t));
         pbuf_free(p);
 
-        if (!queue_try_add(&queue, &received_data)) 
-            printf("Queue is full\n");
+        //if (!queue_try_add(&queue, &received_data)) 
+        //   printf("Queue is full\n");
         
     }
 }
@@ -81,27 +85,48 @@ void pico_Hardware_wifi_Init(const char* ssid, const char* password)
 
 void core_1_Entry(void)
 {
-    UDP_Receive_Init(UDP_Receive_Callback);
+    //UDP_Receive_Init(UDP_Receive_Callback);
 
-     while (true) 
+    //while (true) 
+    //   tight_loop_contents();
+
+    while(true)
+    {
+        if(queue_is_full(&queue_Pico_To_Server))
+        {
+            for(uint8_t i = 0; i < pico_to_server_queue_size; i++)
+            {
+                queue_try_remove(&queue_Pico_To_Server, &pico_To_Server_Data_Buffer);
+                UDP_Send_Data(&pico_To_Server_Data_Buffer);
+                memset(&pico_To_Server_Data_Buffer, 0, sizeof(pico_To_Server_Frame_t));
+            }
+        }
+
+        else
         tight_loop_contents();
+    }
+
+
+
 }
 
-void pico_Wifi_Transmission_Init(const char* ssid, const char* password)
+void pico_Wifi_Transmission_Init(const char *ssid, const char *password)
 {
     pico_Hardware_wifi_Init(ssid, password);
     sleep_ms(1000); //waiting for ip address
-    //multicore_launch_core1(core_1_Entry);
-
-    //UDP_Queue_init(10);
+    
+    UDP_Queue_init();
+    
+    multicore_launch_core1(core_1_Entry);
 }
 
-void UDP_Queue_init(uint32_t queue_Size)
+void UDP_Queue_init(void)
 {
-    queue_init(&queue, sizeof(server_To_Pico_Frame_t), queue_Size);
+    queue_init(&queue_Server_To_Pico, sizeof(server_To_Pico_Frame_t), server_to_pico_queue_size);
+    queue_init(&queue_Pico_To_Server, sizeof(pico_To_Server_Frame_t), pico_to_server_queue_size);
 }
 
-void print_Ip_Address()
+void print_Ip_Address(void)
 {
     struct netif *netif = netif_list;
     while (netif != NULL) {
