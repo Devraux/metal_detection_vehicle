@@ -2,6 +2,7 @@
 
 static struct repeating_timer timer;
 static pico_To_Server_Frame_t pico_To_Server_Data = {0};
+static server_To_Pico_Frame_t server_To_Pico_Data_Buffer = {0};
 static GPS_t GPS_Data; //GPS Data
 
 static float X = 0.0f, Y = 0.0f;
@@ -54,6 +55,12 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     queue_try_add(&queue_Pico_To_Server, &pico_To_Server_Data);
     memset(&pico_To_Server_Data, 0, sizeof(pico_To_Server_Frame_t));  //clear sended data  
 
+    if(queue_is_full(&queue_Server_To_Pico))
+    {
+        queue_try_remove(&queue_Server_To_Pico, &server_To_Pico_Data_Buffer);
+        move(server_To_Pico_Data_Buffer.direction, server_To_Pico_Data_Buffer.velocity);
+    }
+    
     return true;
 }
 

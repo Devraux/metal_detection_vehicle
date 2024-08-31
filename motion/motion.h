@@ -16,11 +16,11 @@
 #define hall_left  17          //left hall sensor
 #define hall_distance 0.05f    //traveled distance between hall sensor irq's
 
-#define drive_forward   0
-#define drive_backward  1
-#define drive_left      2
-#define drive_right     3
-#define drive_stop      4
+#define drive_forward   1
+#define drive_backward  2
+#define drive_left      3
+#define drive_right     4
+#define drive_stop      5
 
 typedef struct motion_t{
     float    distance;
@@ -54,7 +54,7 @@ float get_Distance(void);
 
 /// @brief vehicle current direction getter
 /// @param - 
-/// @return 0-> forward 1-> back 2->left 3->right 9->STOP
+/// @return 1-> forward 2-> back 3->left 4->right 5->STOP
 uint8_t get_Move_Direction(void);
 
 /// @brief causes robot movement and provides soft-start

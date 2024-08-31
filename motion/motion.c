@@ -68,7 +68,7 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
 {
     switch(move_direction_t)
     {
-        case 0: //forward
+        case 1: //forward
             servo_Set_Velocity(servo_front_left, velocity_t);
             servo_Set_Velocity(servo_front_right,velocity_t);
             servo_Set_Velocity(servo_back_left,  velocity_t);
@@ -76,7 +76,7 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             motion.move_Direction = 0;
         break;
 
-        case 1: //back
+        case 2: //back
             servo_Set_Velocity(servo_front_left, -velocity_t);
             servo_Set_Velocity(servo_front_right,-velocity_t);
             servo_Set_Velocity(servo_back_left,  -velocity_t);
@@ -84,7 +84,7 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             motion.move_Direction = 1;
         break;
 
-        case 2: //left
+        case 3: //left
             servo_Set_Velocity(servo_front_left, -velocity_t/5);
             servo_Set_Velocity(servo_front_right, velocity_t);
             servo_Set_Velocity(servo_back_left,  -velocity_t/5);
@@ -93,7 +93,7 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
  
         break;
 
-        case 3: //right
+        case 4: //right
             servo_Set_Velocity(servo_front_left,  velocity_t);
             servo_Set_Velocity(servo_front_right,-velocity_t/5);
             servo_Set_Velocity(servo_back_left,   velocity_t);
@@ -102,7 +102,7 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
 
         break;
 
-        case 4:
+        case 5:
             servo_Set_Velocity(servo_front_left, 0); //STOP Vehicle
             servo_Set_Velocity(servo_front_right,0); //STOP Vehicle
             servo_Set_Velocity(servo_back_left,  0); //STOP Vehicle

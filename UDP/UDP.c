@@ -8,16 +8,21 @@ static ip_addr_t server_Ip;
 queue_t queue_Server_To_Pico;
 queue_t queue_Pico_To_Server;
 
-static server_To_Pico_Frame_t server_To_Pico_Data_Buffer;
 static pico_To_Server_Frame_t pico_To_Server_Data_Buffer;
 
 
-void UDP_Receive_Init(void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t)) 
+void UDP_Receive_Init(void) 
 {
     if (receive_pcb == NULL)
     {
         receive_pcb = udp_new();
-        
+        if(receive_pcb == NULL)
+        {
+            printf("Failed to create UDP PCB\n");
+            return;
+        }
+
+
         if (receive_pcb != NULL)
         {
             err_t err = udp_bind(receive_pcb, IP_ADDR_ANY, UDP_port);
@@ -51,11 +56,11 @@ void UDP_Receive_Callback(void *arg, struct udp_pcb *pcb, struct pbuf *p, const 
     {
         server_To_Pico_Frame_t received_data;
         memcpy(&received_data, p->payload, sizeof(server_To_Pico_Frame_t));
-        pbuf_free(p);
-
-        //if (!queue_try_add(&queue, &received_data)) 
-        //   printf("Queue is full\n");
-        
+        queue_try_add(&queue_Server_To_Pico, &received_data);
+            printf("Received data from IP: %s, Port: %d\n", ip4addr_ntoa(addr), port);
+            printf("Data: %s\n", (char*)p->payload);
+            
+        pbuf_free(p);        
     }
 }
 
@@ -85,10 +90,7 @@ void pico_Hardware_wifi_Init(const char* ssid, const char* password)
 
 void core_1_Entry(void)
 {
-    //UDP_Receive_Init(UDP_Receive_Callback);
-
-    //while (true) 
-    //   tight_loop_contents();
+    UDP_Receive_Init();
 
     while(true)
     {
@@ -101,13 +103,9 @@ void core_1_Entry(void)
                 memset(&pico_To_Server_Data_Buffer, 0, sizeof(pico_To_Server_Frame_t));
             }
         }
-
         else
         tight_loop_contents();
     }
-
-
-
 }
 
 void pico_Wifi_Transmission_Init(const char *ssid, const char *password)

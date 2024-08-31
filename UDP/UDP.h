@@ -52,7 +52,7 @@ typedef struct __attribute__((packed)){
 /// @brief UDP receive initialization
 /// @param pcb UDP configuration structure
 /// @param recv_callback callback function called whenever data is received
-void UDP_Receive_Init(void (*recv_callback)(void *, struct udp_pcb *, struct pbuf *, const ip_addr_t *, u16_t));
+void UDP_Receive_Init(void);
 
 /// @brief UDP send data 
 /// @param server_Ip server ip 
