@@ -58,7 +58,7 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     if(queue_is_full(&queue_Server_To_Pico))
     {
         queue_try_remove(&queue_Server_To_Pico, &server_To_Pico_Data_Buffer);
-        move(server_To_Pico_Data_Buffer.direction, server_To_Pico_Data_Buffer.velocity);
+        move(server_To_Pico_Data_Buffer.direction, 250);
     }
     
     return true;
