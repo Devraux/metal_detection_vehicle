@@ -25,7 +25,7 @@
 extern queue_t queue_Server_To_Pico;
 extern queue_t queue_Pico_To_Server;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed)){
     bool status;                       //Pi pico status -> 0-Active, 1-inactive
     
     float MPU_X;                       //MPU gyroscope calculated X current coordinate

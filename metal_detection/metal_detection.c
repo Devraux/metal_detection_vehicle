@@ -41,8 +41,8 @@ static bool compute_Detections_Data(struct repeating_timer *timer)
 static void check_Metal_Detect(void)
 {
     static uint32_t metal_detection_avg_t = 0; 
-
-    if(metal_detection_avg_t != metal_detect_data.detection_Average)
+    //ATTENTION CODE SHOULD BE TESTED BEGINNING THIS MOMENT
+    if(metal_detection_avg_t >= metal_detect_data.detection_Average + 2 || metal_detection_avg_t <= metal_detect_data.detection_Average - 2)
     {
         metal_detect_data.metal_Detected = true;
         //metal_detect_data.detected_Metal_Counter++;

@@ -57,8 +57,8 @@ void UDP_Receive_Callback(void *arg, struct udp_pcb *pcb, struct pbuf *p, const 
         server_To_Pico_Frame_t received_data;
         memcpy(&received_data, p->payload, sizeof(server_To_Pico_Frame_t));
         queue_try_add(&queue_Server_To_Pico, &received_data);
-            printf("Received data from IP: %s, Port: %d\n", ip4addr_ntoa(addr), port);
-            printf("Data: %s\n", (char*)p->payload);
+            //printf("Received data from IP: %s, Port: %d\n", ip4addr_ntoa(addr), port);
+            //printf("Data: %s\n", (char*)p->payload);
             
         pbuf_free(p);        
     }

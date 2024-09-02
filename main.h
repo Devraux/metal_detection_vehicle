@@ -1,8 +1,8 @@
 #ifndef _main_
 #define _main_
 
-#include <stdio.h>
-#include <stdbool.h>
+//#include <stdio.h>
+//#include <stdbool.h>
 #include "pico/stdlib.h"
 //#include "pico_irq/pico_irq.h"
 //#include "servo/servo.h"

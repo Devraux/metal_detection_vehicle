@@ -33,7 +33,7 @@ void robot_Boot_Strap(void)
 }
 
 bool period_Robot_Measurements(struct repeating_timer *timer)
-{   //printf("metal_detection: %d\n",get_Metal_Detection_Status());
+{   printf("metal_detection: %d\n",get_Metal_Detection_Status());
     GPS_Get_Info(&GPS_Data);
     pico_To_Server_Data.GPS_Latitude = GPS_Data.Latitude;
     pico_To_Server_Data.GPS_Latitude_dec =  GPS_Data.Latitude_dec;
