@@ -25,7 +25,7 @@ void gpio_callback(uint gpio, uint32_t events)
             if(time_us_32() >= Hall_time + 250) //debouncing
             { 
                 Hall_time = time_us_32();
-                if(get_Move_Direction() == 0 || get_Move_Direction() == 1) //Update distance only when <-> move direction == Back or move direction == Left
+                if(get_Move_Direction() == drive_forward || get_Move_Direction() == drive_backward) //Update distance only when <-> move direction == Back or move direction == Left
                 {   
                     distance_Update();
                     XY_Position_Update(mpu_Get_Yaw());

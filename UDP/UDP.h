@@ -25,7 +25,7 @@
 extern queue_t queue_Server_To_Pico;
 extern queue_t queue_Pico_To_Server;
 
-typedef struct __attribute__((packed)){
+typedef struct pico_To_Server_Frame_t{
     bool status;                       //Pi pico status -> 0-Active, 1-inactive
     
     float MPU_X;                       //MPU gyroscope calculated X current coordinate
@@ -42,7 +42,7 @@ typedef struct __attribute__((packed)){
     //uint32_t metal_Detection_Counter;  //metal Detection Counter 
 }pico_To_Server_Frame_t; 
 
-typedef struct __attribute__((packed)){
+typedef struct server_To_Pico_Frame_t{
     bool status;                       //Server status -> 0-Active, 1-inactive
     uint8_t direction;                 //Vehicle direction command
     int16_t velocity;                  //Vehicle velocity command

@@ -46,7 +46,7 @@ static void uart_Handler(void)
 static void NMEA_FRAME_PARSE(void)
 { 
     if(nmea_Frame_Buffer.buffer_Data[4] == (uint32_t)'M' && nmea_Frame_Buffer.buffer_Data[5] == (uint32_t)'C')
-    {
+    {   
         ASCII_Convert(nmea_Frame_Buffer.buffer_Data, nmea_Frame_Buffer.counter);
         GPS.Hour =  (merge_2(nmea_Frame_Buffer.buffer_Data[7], nmea_Frame_Buffer.buffer_Data[8]) + 2) % 24;
         GPS.Minute = merge_2(nmea_Frame_Buffer.buffer_Data[9], nmea_Frame_Buffer.buffer_Data[10]);
