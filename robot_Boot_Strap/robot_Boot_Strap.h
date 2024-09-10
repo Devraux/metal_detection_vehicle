@@ -19,4 +19,6 @@ void robot_Boot_Strap(void);
 /// @return true if measurements goes correct false otherwise
 bool period_Robot_Measurements(struct repeating_timer *timer);
 
+bool queue_Set_Velocity(struct repeating_timer *timer);
+
 #endif

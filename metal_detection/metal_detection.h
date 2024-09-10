@@ -10,6 +10,7 @@
 #include "hardware/gpio.h"
 #include "hardware/timer.h"
 #include "hardware/pwm.h"
+#include "motion/motion.h"
 
 #define metal_detect_gpio 18
 

@@ -14,7 +14,7 @@
 
 #define hall_right 16          //right hall sensor
 #define hall_left  17          //left hall sensor
-#define hall_distance 0.05f    //traveled distance between hall sensor irq's
+#define hall_distance 0.05f    //traveled distance between hall sensor irq's <-> 0.05m = 5cm
 
 #define drive_forward   1
 #define drive_backward  2
@@ -23,13 +23,25 @@
 #define drive_stop      5
 
 typedef struct motion_t{
-    float    distance;
-    uint32_t distance_Absolute;
-    uint8_t  move_Direction; // 0-> forward 1-> back 2->left 3->right 9->STOP
-    uint32_t velocity;       // current velocity from -250 to 250
-    float current_position_X;
-    float current_position_Y;
+    float    distance;              // Distance taking into account forward and backward movement
+    float    distance_Absolute;     // Absolute distance
+    uint8_t  move_Direction;        // Current move direction <-> 1-> forward 2-> back 3->left 4->right 5->STOP
+    uint32_t velocity;              // Current velocity from -250 to 250
+    float    current_position_X;    // Current X position obtained from mpu6050 gyroscope and formulas
+    float    current_position_Y;    // Current Y position obtained from mpu6050 gyroscope and formulas
+    float    adjusted_Angle;        // Adjusted angle (attention!!! this is not current angle(usually))
 }motion_t; 
+
+typedef struct PID_Regulator_t{ 
+    float P_Segment;                //Proportion formula segment
+    float I_Segment;                //Integral formula segment
+    float D_Segment;                //Derivative formula segment
+    int32_t P_Factor;
+    int32_t I_Factor;
+    int32_t D_Factor;
+    int32_t D_Last_Error; 
+
+}PID_Regulator_t;
 
 /// @brief vehicle motion devices(hall sensors and servos initialization)
 /// @param servo_1_gpio servo 1 gpio pin
@@ -39,6 +51,7 @@ typedef struct motion_t{
 /// @param hall_1_gpio  hall sensor gpio pin
 /// @param hall_2_gpio  hall sensor gpio pin 
 void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t servo_back_left_t, uint8_t servo_back_right_t, uint8_t hall_left_t, uint8_t hall_right_t, void *gpio_callback);
+
 
 /// @brief hall initialization func
 /// @param gpio_num hall sensor gpio pin number
@@ -53,7 +66,7 @@ void distance_Update(void);
 float get_Distance(void);
 
 /// @brief vehicle current direction getter
-/// @param - 
+/// @param -- 
 /// @return 1-> forward 2-> back 3->left 4->right 5->STOP
 uint8_t get_Move_Direction(void);
 
@@ -73,18 +86,23 @@ void motion_Get_XY(float *X, float *Y);
 
 /// @brief converter from degrees to radians 
 /// @param radians 
-/// @return 
+/// @return degrees
 float deg_To_Rad(float degrees);
 
 /// @brief Turn left based on accelerometer
-/// @param -
+/// @param --
 void turn_Left(void);
 
 /// @brief Turn Right based on accelerometer
-/// @param -
+/// @param --
 void turn_Right(void);
 
+/// @brief absolute distance getter
+/// @param --
+/// @return absolute distance 
+float get_Absolute_Distance(void);
+
 //TODO
-//void drive_Forward();  bad function name
-//void drive_Backward(); bad function name
+void drive_Forward(void);
+void drive_Backward(void);
 #endif

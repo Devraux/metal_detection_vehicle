@@ -11,9 +11,9 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
     gpio_pull_up(gpio_num_t);
     gpio_set_irq_enabled_with_callback(gpio_num_t, GPIO_IRQ_EDGE_FALL, true, gpio_callback);
 
-    uint32_t *buffer_data = (uint32_t*)malloc(450 * sizeof(uint32_t)); // redundancy - 450 samples
+    uint32_t *buffer_data = (uint32_t*)malloc(450 * sizeof(uint32_t));      // redundancy - 450 samples
     buffer_Init(&buffer, buffer_data, 450);   
-    add_repeating_timer_ms(-215, compute_Detections_Data, NULL, &timer);  // ~5 times per second
+    add_repeating_timer_ms(-145, compute_Detections_Data, NULL, &timer);    // ~5 times per second
 }
 
 void metal_Detect_Irq(void)
@@ -41,10 +41,11 @@ static bool compute_Detections_Data(struct repeating_timer *timer)
 static void check_Metal_Detect(void)
 {
     static uint32_t metal_detection_avg_t = 0; 
-    //ATTENTION CODE SHOULD BE TESTED BEGINNING THIS MOMENT
-    if(metal_detection_avg_t >= metal_detect_data.detection_Average + 2 || metal_detection_avg_t <= metal_detect_data.detection_Average - 2)
+    static float abs_Distance = 0;
+    if((metal_detection_avg_t >= metal_detect_data.detection_Average + 2 || metal_detection_avg_t <= metal_detect_data.detection_Average - 2) && get_Absolute_Distance() >= abs_Distance + hall_distance)
     {
         metal_detect_data.metal_Detected = true;
+        abs_Distance = get_Absolute_Distance();
         //metal_detect_data.detected_Metal_Counter++;
     }
 
@@ -52,7 +53,6 @@ static void check_Metal_Detect(void)
         metal_detect_data.metal_Detected = false;
 
     metal_detection_avg_t = metal_detect_data.detection_Average; 
-
 }
 
 bool get_Metal_Detection_Status(void)

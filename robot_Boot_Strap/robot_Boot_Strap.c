@@ -1,6 +1,6 @@
 #include "robot_Boot_Strap.h"
 
-static struct repeating_timer timer;
+static struct repeating_timer timer, timer2;
 static pico_To_Server_Frame_t pico_To_Server_Data = {0};
 static server_To_Pico_Frame_t server_To_Pico_Data_Buffer = {0};
 static GPS_t GPS_Data; //GPS Data
@@ -28,6 +28,7 @@ void robot_Boot_Strap(void)
     GPS_Init(rx_Gpio,tx_Gpio);
 
     add_repeating_timer_ms(-235, &period_Robot_Measurements, NULL, &timer);
+    add_repeating_timer_ms(-145, &queue_Set_Velocity, NULL, &timer2);
 }
 
 bool period_Robot_Measurements(struct repeating_timer *timer)
@@ -46,19 +47,29 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     motion_Get_XY(&X, &Y); 
     pico_To_Server_Data.MPU_X = X;
     pico_To_Server_Data.MPU_Y = Y;
-    printf("X: %f, Y: %f\n", pico_To_Server_Data.MPU_X, pico_To_Server_Data.MPU_Y);
+    //printf("X: %f, Y: %f\n", pico_To_Server_Data.MPU_X, pico_To_Server_Data.MPU_Y);
     pico_To_Server_Data.status = 0; //everything goes good
   
     // Add received data from device to Queue and clear data structure
     queue_try_add(&queue_Pico_To_Server, &pico_To_Server_Data); 
     memset(&pico_To_Server_Data, 0, sizeof(pico_To_Server_Frame_t));  //clear sended data  
 
+    //if(queue_is_full(&queue_Server_To_Pico))
+    //{
+    //    queue_try_remove(&queue_Server_To_Pico, &server_To_Pico_Data_Buffer);
+    //    move(server_To_Pico_Data_Buffer.direction, 250);
+    //}
+    
+    return true;
+}
+
+bool queue_Set_Velocity(struct repeating_timer *timer)
+{   
     if(queue_is_full(&queue_Server_To_Pico))
     {
         queue_try_remove(&queue_Server_To_Pico, &server_To_Pico_Data_Buffer);
         move(server_To_Pico_Data_Buffer.direction, 250);
     }
-    
+
     return true;
 }
-
