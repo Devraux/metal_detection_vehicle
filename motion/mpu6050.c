@@ -50,7 +50,7 @@ void mpu_Init(void)
     mpu6050.Yaw = 90.0f; // initial angle is 90* <-> not 0 !!! <->  cartesian coordinate system
 
     //MPU6050 INTERRUPT INIT
-    add_repeating_timer_ms(-200, mpu_Read, NULL, &timer); // 4 times per second
+    add_repeating_timer_ms(-132, mpu_Read, NULL, &timer); // 4 times per second
 }
 
 void mpu_Reset(void)
@@ -108,7 +108,7 @@ bool mpu_Read(struct repeating_timer *timer)
     else 
         Z_Gyro_No_Offset = 0;
 
-    mpu6050.Yaw += Z_Gyro * 0.2f;
+    mpu6050.Yaw += Z_Gyro * 0.132f;
 
     if(mpu6050.Yaw >= 360.0f)
         mpu6050.Yaw = fmod(mpu6050.Yaw, 360.0f);

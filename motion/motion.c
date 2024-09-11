@@ -20,9 +20,10 @@ void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_
     hall_Init(hall_left_t, gpio_callback);
     hall_Init(hall_right_t, gpio_callback);
 
-    motion.adjusted_Angle = 90.0f;  //Initial value of device yaw angle
+    motion.adjusted_Angle = 90.0f;     //Initial value of device yaw angle
+    motion.current_Yaw = 90.0f;
     PID_Regulator.P_Factor = 10.0f;    //PID Regulator factors initialize
-    PID_Regulator.I_Factor = 3.0f;     //PID Regulator factors initialize
+    PID_Regulator.I_Factor = 2.0f;     //PID Regulator factors initialize
     PID_Regulator.D_Factor = 0.0f;     //PID Regulator factors initialize
 
 
@@ -87,14 +88,18 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             //servo_Set_Velocity(servo_back_right, velocity_t);
 
             drive_Forward();
+            motion.current_Yaw = mpu_Get_Yaw();
             motion.move_Direction = drive_forward;
         break;
 
         case drive_backward: //back
-            servo_Set_Velocity(servo_front_left, -velocity_t);
-            servo_Set_Velocity(servo_front_right,-velocity_t);
-            servo_Set_Velocity(servo_back_left,  -velocity_t);
-            servo_Set_Velocity(servo_back_right, -velocity_t);
+            //servo_Set_Velocity(servo_front_left, -velocity_t);
+            //servo_Set_Velocity(servo_front_right,-velocity_t);
+            //servo_Set_Velocity(servo_back_left,  -velocity_t);
+            //servo_Set_Velocity(servo_back_right, -velocity_t);
+
+            drive_Backward();
+            motion.current_Yaw = mpu_Get_Yaw();
             motion.move_Direction = drive_backward;
         break;
 
@@ -103,7 +108,10 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             servo_Set_Velocity(servo_front_right, velocity_t/5);
             servo_Set_Velocity(servo_back_left,  -velocity_t/5);
             servo_Set_Velocity(servo_back_right,  velocity_t/4);
+            busy_wait_ms(100);
             motion.adjusted_Angle = mpu_Get_Yaw();
+            motion.current_Yaw = motion.adjusted_Angle;
+            PID_Regulator.I_Segment = 0.0f;
             motion.move_Direction = drive_left;
         break;
 
@@ -112,7 +120,10 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             servo_Set_Velocity(servo_front_right,-velocity_t/5);
             servo_Set_Velocity(servo_back_left,   velocity_t/5);
             servo_Set_Velocity(servo_back_right, -velocity_t/6);
+            busy_wait_ms(100);
             motion.adjusted_Angle = mpu_Get_Yaw();
+            motion.current_Yaw = motion.adjusted_Angle;
+            PID_Regulator.I_Segment = 0.0f;
             motion.move_Direction = drive_right;
         break;
 
@@ -164,36 +175,64 @@ void turn_Right()
 
 void drive_Forward()
 {   
-    float yaw = mpu_Get_Yaw(); //current yaw measured by gyroscope embedded in mpu6050
-    float error_turned_side = motion.adjusted_Angle - yaw;
-    PID_Regulator.P_Segment  = (motion.adjusted_Angle - yaw) * PID_Regulator.P_Factor; 
-    PID_Regulator.I_Segment += (motion.adjusted_Angle - yaw) * PID_Regulator.I_Factor;
-    PID_Regulator.D_Segment = ((motion.adjusted_Angle - yaw) - PID_Regulator.D_Last_Error) * PID_Regulator.D_Factor;
-    PID_Regulator.D_Last_Error = motion.adjusted_Angle - yaw;
+    float error_turned_side = motion.adjusted_Angle - motion.current_Yaw;
+    PID_Regulator.P_Segment  = (motion.adjusted_Angle - motion.current_Yaw) * PID_Regulator.P_Factor; 
+    PID_Regulator.I_Segment += (motion.adjusted_Angle - motion.current_Yaw) * PID_Regulator.I_Factor;
+    PID_Regulator.D_Segment = 0.0f;//((motion.adjusted_Angle - yaw) - PID_Regulator.D_Last_Error) * PID_Regulator.D_Factor;
+    PID_Regulator.D_Last_Error = motion.adjusted_Angle - motion.current_Yaw;
     static int32_t left_Wheels_Velocity  = 0;
     static int32_t right_Wheels_Velocity = 0;
     
     if(error_turned_side >= 0.0f)      //Vehicle was driving too far to the right
     {   
-        left_Wheels_Velocity  = floor(250 - (PID_Regulator.P_Segment + PID_Regulator.I_Segment + PID_Regulator.D_Segment));
-        right_Wheels_Velocity = floor(250 + (PID_Regulator.P_Segment + PID_Regulator.I_Segment + PID_Regulator.D_Segment));
+        left_Wheels_Velocity  = round(250 - (PID_Regulator.P_Segment + PID_Regulator.I_Segment + PID_Regulator.D_Segment));
+        right_Wheels_Velocity = round(250 + (PID_Regulator.P_Segment + PID_Regulator.I_Segment + PID_Regulator.D_Segment));
 
         servo_Set_Velocity(servo_front_left, left_Wheels_Velocity);
         servo_Set_Velocity(servo_front_right,right_Wheels_Velocity);
         servo_Set_Velocity(servo_back_left,  left_Wheels_Velocity);
-        servo_Set_Velocity(servo_back_right, right_Wheels_Velocity);printf("left velocity: %d, right velocity: %d\n", left_Wheels_Velocity, right_Wheels_Velocity);
+        servo_Set_Velocity(servo_back_right, right_Wheels_Velocity);//printf("left velocity: %d, right velocity: %d\n", left_Wheels_Velocity, right_Wheels_Velocity);
     }
     else if(error_turned_side <= 0.0f) //Vehicle was driving too far to the left 
     {   
-        left_Wheels_Velocity  = floor(250 + (-PID_Regulator.P_Segment - PID_Regulator.I_Segment - PID_Regulator.D_Segment));
-        right_Wheels_Velocity = floor(250 - (-PID_Regulator.P_Segment - PID_Regulator.I_Segment - PID_Regulator.D_Segment));
+        left_Wheels_Velocity  = round(250 + (-PID_Regulator.P_Segment - PID_Regulator.I_Segment - PID_Regulator.D_Segment));
+        right_Wheels_Velocity = round(250 - (-PID_Regulator.P_Segment - PID_Regulator.I_Segment - PID_Regulator.D_Segment));
 
         servo_Set_Velocity(servo_front_left, left_Wheels_Velocity);
         servo_Set_Velocity(servo_front_right,right_Wheels_Velocity);
         servo_Set_Velocity(servo_back_left,  left_Wheels_Velocity);
-        servo_Set_Velocity(servo_back_right, right_Wheels_Velocity);printf("left velocity: %d, right velocity: %d\n", left_Wheels_Velocity, right_Wheels_Velocity);
+        servo_Set_Velocity(servo_back_right, right_Wheels_Velocity);//printf("left velocity: %d, right velocity: %d\n", left_Wheels_Velocity, right_Wheels_Velocity);
     }
 }
 
+void drive_Backward()
+{
+    float error_turned_side = motion.adjusted_Angle - motion.current_Yaw;
+    PID_Regulator.P_Segment  = (motion.adjusted_Angle - motion.current_Yaw) * PID_Regulator.P_Factor; 
+    PID_Regulator.I_Segment += (motion.adjusted_Angle - motion.current_Yaw) * PID_Regulator.I_Factor;
+    PID_Regulator.D_Segment = 0.0f;//((motion.adjusted_Angle - yaw) - PID_Regulator.D_Last_Error) * PID_Regulator.D_Factor;
+    PID_Regulator.D_Last_Error = motion.adjusted_Angle - motion.current_Yaw;
+    static int32_t left_Wheels_Velocity  = 0;
+    static int32_t right_Wheels_Velocity = 0;
+    
+    if(error_turned_side >= 0.0f)      //Vehicle was driving too far to the right
+    {   
+        left_Wheels_Velocity  = round(-250 + (-PID_Regulator.P_Segment - PID_Regulator.I_Segment - PID_Regulator.D_Segment));
+        right_Wheels_Velocity = round(-250 - (-PID_Regulator.P_Segment - PID_Regulator.I_Segment - PID_Regulator.D_Segment));
 
-void drive_Backward();
+        servo_Set_Velocity(servo_front_left, left_Wheels_Velocity);
+        servo_Set_Velocity(servo_front_right,right_Wheels_Velocity);
+        servo_Set_Velocity(servo_back_left,  left_Wheels_Velocity);
+        servo_Set_Velocity(servo_back_right, right_Wheels_Velocity);//printf("left velocity: %d, right velocity: %d\n", left_Wheels_Velocity, right_Wheels_Velocity);
+    }
+    else if(error_turned_side <= 0.0f) //Vehicle was driving too far to the left 
+    {   
+        left_Wheels_Velocity  = round(-250 - (PID_Regulator.P_Segment + PID_Regulator.I_Segment + PID_Regulator.D_Segment));
+        right_Wheels_Velocity = round(-250 + (PID_Regulator.P_Segment + PID_Regulator.I_Segment + PID_Regulator.D_Segment));
+
+        servo_Set_Velocity(servo_front_left, left_Wheels_Velocity);
+        servo_Set_Velocity(servo_front_right,right_Wheels_Velocity);
+        servo_Set_Velocity(servo_back_left,  left_Wheels_Velocity);
+        servo_Set_Velocity(servo_back_right, right_Wheels_Velocity);//printf("left velocity: %d, right velocity: %d\n", left_Wheels_Velocity, right_Wheels_Velocity);
+    }
+}

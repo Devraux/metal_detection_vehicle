@@ -30,6 +30,7 @@ typedef struct motion_t{
     float    current_position_X;    // Current X position obtained from mpu6050 gyroscope and formulas
     float    current_position_Y;    // Current Y position obtained from mpu6050 gyroscope and formulas
     float    adjusted_Angle;        // Adjusted angle (attention!!! this is not current angle(usually))
+    float    current_Yaw;           // Current Yaw angle
 }motion_t; 
 
 typedef struct PID_Regulator_t{ 
