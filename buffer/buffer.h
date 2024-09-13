@@ -37,4 +37,8 @@ void buffer_Clear(buffer_t *buffer);
 /// @param buffer buffer structure
 void buffer_print(buffer_t* buffer);
 
+/// @brief return number of data stored in buffer  
+/// @param buffer 
+uint32_t buffer_Get_Count(buffer_t *buffer);
+
 #endif

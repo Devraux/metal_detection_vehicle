@@ -31,6 +31,7 @@ typedef struct motion_t{
     float    current_position_Y;    // Current Y position obtained from mpu6050 gyroscope and formulas
     float    adjusted_Angle;        // Adjusted angle (attention!!! this is not current angle(usually))
     float    current_Yaw;           // Current Yaw angle
+    uint32_t move_Time_Stamp;     // Elapsed time between device move commands <-> necessary for eliminate metal detector time measurements errors 
 }motion_t; 
 
 typedef struct PID_Regulator_t{ 
@@ -102,6 +103,8 @@ void turn_Right(void);
 /// @param --
 /// @return absolute distance 
 float get_Absolute_Distance(void);
+
+uint32_t get_move_Time_Stamp(void);
 
 //TODO
 void drive_Forward(void);

@@ -18,18 +18,31 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
 
 void metal_Detect_Irq(void)
 {
+    static uint32_t previous_Elapsed_Time = 0;
+    if(time_us_32() <= (get_move_Time_Stamp() + 5000))
+        return;
+
     static uint32_t previous_edge_time = 0;
     uint32_t current_edge_time = time_us_32();
     uint32_t elapsed_time = current_edge_time - previous_edge_time;
     previous_edge_time = current_edge_time;
 
-    buffer_Add(&buffer, elapsed_time);  
+    if(elapsed_time >= previous_Elapsed_Time + 15)
+    {   
+        previous_Elapsed_Time = elapsed_time;
+        return;
+    }
+    else
+    {
+        previous_Elapsed_Time = elapsed_time;
+        buffer_Add(&buffer, elapsed_time);  
+    }
 }
 
 static bool compute_Detections_Data(struct repeating_timer *timer)
 {
     uint32_t sum = 0;
-    for(uint32_t i = 0; i < buffer.buffer_Size; i++)
+    for(uint32_t i = 0; i < buffer.counter; i++)
         sum += buffer.buffer_Data[i];
 
     metal_detect_data.detection_Average = sum / buffer.counter;
@@ -41,7 +54,7 @@ static bool compute_Detections_Data(struct repeating_timer *timer)
 static void check_Metal_Detect(void)
 {
     static uint32_t metal_detection_avg_t = 0; 
-    static float abs_Distance = 0;
+    static float abs_Distance = 0.0f;
     if((metal_detection_avg_t >= metal_detect_data.detection_Average + 2 || metal_detection_avg_t <= metal_detect_data.detection_Average - 2) && get_Absolute_Distance() >= abs_Distance + hall_distance)
     {
         metal_detect_data.metal_Detected = true;

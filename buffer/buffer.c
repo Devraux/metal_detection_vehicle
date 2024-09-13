@@ -33,11 +33,16 @@ void buffer_Clear(buffer_t *buffer)
     memset(buffer->buffer_Data, 0, buffer->buffer_Size * sizeof(uint32_t));
 }
 
-void buffer_print(buffer_t* buffer)
+void buffer_print(buffer_t *buffer)
 {
     for(uint16_t i = buffer->tail; i < buffer->head; i++)
     {
        printf("%d: %d\n", i, buffer->buffer_Data[i]);
        printf("---------------=----------------\n");
     }
+}
+
+uint32_t buffer_Get_Count(buffer_t *buffer)
+{
+    return buffer->counter;
 }
