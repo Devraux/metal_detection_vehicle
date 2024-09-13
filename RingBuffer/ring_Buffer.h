@@ -13,7 +13,7 @@ typedef struct ring_Buffer_t
     int32_t *DataX;       //ring buffer data
     int32_t *DataY;       //ring buffer data
     int32_t *DataZ;       //ring buffer data
-    uint32_t Counter;   //counts data in buffer
+    uint32_t Counter;     //counts data in buffer
     uint32_t Head;      
     uint32_t Tail;      
     uint32_t Buffer_Size;

@@ -24,7 +24,7 @@ void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
 
 static void uart_Handler(void)
 {
-    while(uart_is_readable(GPS.uart))
+    while(uart_is_readable(GPS.uart)) //uart is uart instance <-> look up to GPS_Init
     {
         uint32_t data = uart_getc(GPS.uart); 
 

@@ -104,9 +104,16 @@ void turn_Right(void);
 /// @return absolute distance 
 float get_Absolute_Distance(void);
 
+/// @brief returns the timestamp since the last traffic change <-> time stamp is updated after: turn_right, turn_left_ drive forward, drive_backward
+/// @param --
+/// @return current time stamp 
 uint32_t get_move_Time_Stamp(void);
 
-//TODO
+/// @brief drive forward based on PID Regulator
+/// @param --
 void drive_Forward(void);
+
+/// @brief drive backward based on PID Regulator
+/// @param --
 void drive_Backward(void);
 #endif

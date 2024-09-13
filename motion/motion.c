@@ -12,19 +12,20 @@ void hall_Init(uint8_t gpio_num, void *gpio_callback)
 
 void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_t servo_back_left_t, uint8_t servo_back_right_t, uint8_t hall_left_t, uint8_t hall_right_t, void *gpio_callback)
 {
-    servo_Init(servo_front_left_t);
-    servo_Init(servo_front_right_t);
-    servo_Init(servo_back_left_t);
-    servo_Init(servo_back_right_t);
+    servo_Init(servo_front_left_t);         //Servo initialization
+    servo_Init(servo_front_right_t);        //Servo initialization
+    servo_Init(servo_back_left_t);          //Servo initialization
+    servo_Init(servo_back_right_t);         //Servo initialization
 
-    hall_Init(hall_left_t, gpio_callback);
-    hall_Init(hall_right_t, gpio_callback);
+    hall_Init(hall_left_t, gpio_callback);  //Left hall sensor initialization <-> NOT USED
+    hall_Init(hall_right_t, gpio_callback); //Right hall sensor initialization
 
-    motion.adjusted_Angle = 90.0f;     //Initial value of device yaw angle
-    motion.current_Yaw = 90.0f;
-    PID_Regulator.P_Factor = 10.0f;    //PID Regulator factors initialize
-    PID_Regulator.I_Factor = 2.0f;     //PID Regulator factors initialize
-    PID_Regulator.D_Factor = 0.0f;     //PID Regulator factors initialize
+    motion.adjusted_Angle  = 90.0f;         //Initial value of device yaw angle
+    motion.current_Yaw     = 90.0f;         //Device Current Yaw
+    
+    PID_Regulator.P_Factor = 10.0f;         //PID Regulator factor initialize
+    PID_Regulator.I_Factor = 2.0f;          //PID Regulator factor initialize
+    PID_Regulator.D_Factor = 0.0f;          //PID Regulator factor initialize
 
 
     mpu_Init();
@@ -32,13 +33,13 @@ void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_
 
 void distance_Update(void)
 {
-    if(motion.move_Direction == drive_forward)      // forward
-        motion.distance += hall_distance;   // ~0.05 meter
+    if(motion.move_Direction == drive_forward)       // forward
+        motion.distance += hall_distance;            // ~0.05 meter = 5cm
 
-    else if(motion.move_Direction == drive_backward) //backward
-        motion.distance -= hall_distance;   // ~0.05 meter
+    else if(motion.move_Direction == drive_backward) // backward
+        motion.distance -= hall_distance;            // ~0.05 meter = 5cm
     
-    motion.distance_Absolute += hall_distance;
+    motion.distance_Absolute += hall_distance;       //Device absolute distance 
 }
 
 uint8_t get_Move_Direction(void)
@@ -166,6 +167,7 @@ void turn_Left()
     float current_Angle = mpu_Get_Yaw();
     while(mpu_Get_Yaw() <= current_Angle + 90.0f)
         move(drive_left, 250);
+        
     move(drive_stop, 0); //STOP
     motion.adjusted_Angle = mpu_Get_Yaw();
 }
@@ -175,6 +177,7 @@ void turn_Right()
     float current_Angle = mpu_Get_Yaw();
     while(mpu_Get_Yaw() >= current_Angle - 90.0f)
         move(drive_right, 250);
+
     move(drive_stop, 0); //STOP
     motion.adjusted_Angle = mpu_Get_Yaw();
 }

@@ -25,7 +25,7 @@ void robot_Boot_Strap(void)
     metal_Detect_Init(metal_detect_gpio, &gpio_callback);
 
     //INITIALIZATION: GPS
-    GPS_Init(rx_Gpio,tx_Gpio);
+    GPS_Init(GPS_Rx_Gpio, GPS_Tx_Gpio);
 
     add_repeating_timer_ms(-235, &period_Robot_Measurements, NULL, &timer);
     add_repeating_timer_ms(-145, &queue_Set_Velocity, NULL, &timer2);

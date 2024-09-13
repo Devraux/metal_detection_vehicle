@@ -11,11 +11,21 @@
 #include "string.h"
 #include "buffer/buffer.h"
 
-#define rx_Gpio 9
-#define tx_Gpio 8
+#define GPS_Rx_Gpio 9
+#define GPS_Tx_Gpio 8
 #define baud_Rate 9600
 #define UART_ID 1
 #define GPS_MSG_MAX_LEN 255
+
+// @attention My project doesn't use a lot of informations received from GPS receiver device <-> I only use GPRMC frame to obtain:
+// - Longitude
+// - Latitude
+// - Hour
+// - Minute
+// - Second
+// To save Pi Pico energy and computations I commented some unnecessary functionalities
+// Commented code is untested and containing bugs and errors <-> I t will be fixed in next updates
+// Current State: COMMENTED CODE NOT FIXED
 
 typedef enum GPS_State_t{ 
     GOT_FRAME_BEGINNING,  // got '$' char
@@ -45,7 +55,7 @@ typedef struct GPS_t{
 
 	// uint8_t Satellites_Number;
 	// uint8_t Quality;    // 0 - no Fix, 1 - Fix, 2 - Dif. Fix
-	// uint8_t Fix_Mode;    // 1 - no Fiz, 2 - 2D, 3 - 3D
+	// uint8_t Fix_Mode;   // 1 - no Fix, 2 - 2D, 3 - 3D
 	// double Dop;         // Dilution of precision
 	// double Hdop;        // Dilution of precision for flat coords
 	// double Vdop;        // Dilution of precision for height
@@ -97,5 +107,7 @@ static uint32_t merge_5(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, ui
 /// @param data_Size size of data
 static void ASCII_Convert(uint32_t *data, uint32_t data_Size);
 
+/// @brief get data received from GPS module(NEO6M) and copy it for GPS_Struct structure
+/// @param GPS_Struct user GPS structure
 void GPS_Get_Info(GPS_t *GPS_Struct);
 #endif

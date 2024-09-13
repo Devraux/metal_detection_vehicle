@@ -17,7 +17,7 @@
 typedef struct metal_detect_data_t
 {
     bool metal_Detected;              // 0 -> metal is not detected, 1-> metal detected
-    uint32_t detected_Metal_Counter;  //counts metal occurrences 
+    uint32_t detected_Metal_Counter;  //counts metal occurrences <-> NOT USED
     uint32_t detection_Average;       //additional variable storing the average value of the time between the occurrences of the generator signal edges  
 }metal_detect_data_t;
 

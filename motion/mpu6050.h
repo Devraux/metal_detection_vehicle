@@ -71,7 +71,6 @@ void mpu_Init(void);
 /// @brief device reset
 void mpu_Reset(void); 
 
-
 /// @brief mpu read raw data
 /// @param mpu6050_t  mpu6050_t data structure 
 void mpu_Read_Raw(void); 

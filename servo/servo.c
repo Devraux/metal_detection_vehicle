@@ -1,6 +1,5 @@
 #include "servo.h"
 
-
 void servo_Init(uint8_t gpio_num)
 {
     uint8_t slice_number = pwm_gpio_to_slice_num(gpio_num);
