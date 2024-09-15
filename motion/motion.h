@@ -22,6 +22,8 @@
 #define drive_right     4
 #define drive_stop      5
 
+#define PID_Elapsed_Time 0.145f
+
 typedef struct motion_t{
     float    distance;              // Distance taking into account forward and backward movement
     float    distance_Absolute;     // Absolute distance
@@ -42,7 +44,6 @@ typedef struct PID_Regulator_t{
     int32_t I_Factor;
     int32_t D_Factor;
     int32_t D_Last_Error; 
-
 }PID_Regulator_t;
 
 /// @brief vehicle motion devices(hall sensors and servos initialization)
