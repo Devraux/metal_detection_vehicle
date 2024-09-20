@@ -2,15 +2,19 @@
 
 void irq_Init(void)
 {
-    irq_set_priority(UART0_IRQ, 10);     //UART NVIC configuration
-    irq_set_priority(UART1_IRQ, 10);     //GPIO NVIC configuration
+    irq_set_priority(UART0_IRQ,   3);   //UART NVIC configuration
+    irq_set_priority(UART1_IRQ,   3);   //GPIO NVIC configuration
 
-    irq_set_priority(TIMER_IRQ_0, 9);   //TIMER NVIC configuration
-    irq_set_priority(TIMER_IRQ_1, 9);   //TIMER NVIC configuration
-    irq_set_priority(TIMER_IRQ_2, 9);   //TIMER NVIC configuration
-    irq_set_priority(TIMER_IRQ_3, 9);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_0, 2);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_1, 2);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_2, 2);   //TIMER NVIC configuration
+    irq_set_priority(TIMER_IRQ_3, 2);   //TIMER NVIC configuration
+
+    irq_set_priority(I2C0_IRQ, 1);      //I2C NVIC configuration 
+    irq_set_priority(I2C1_IRQ, 1);      //I2C NVIC configuration 
 
     irq_set_priority(IO_IRQ_BANK0, 0);  //GPIO NVIC configuration
+    irq_set_enabled(IO_IRQ_BANK0, true);//GPIO IRQ Enable
 }
 
 void gpio_callback(uint gpio, uint32_t events)

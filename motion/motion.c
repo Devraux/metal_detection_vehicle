@@ -17,15 +17,15 @@ void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_
     servo_Init(servo_back_left_t);          //Servo initialization
     servo_Init(servo_back_right_t);         //Servo initialization
 
-    hall_Init(hall_left_t, gpio_callback);  //Left hall sensor initialization <-> NOT USED
-    hall_Init(hall_right_t, gpio_callback); //Right hall sensor initialization
+    hall_Init(hall_left_t, gpio_callback);  //Left hall sensor initialization
+    //hall_Init(hall_right_t, gpio_callback); //Right hall sensor initialization <-> NOT USED
 
     motion.adjusted_Angle  = 90.0f;         //Initial value of device yaw angle
     motion.current_Yaw     = 90.0f;         //Device Current Yaw
     
     PID_Regulator.P_Factor = 10.0f;         //PID Regulator factor initialize   <-> The Best Factor: 10.0
-    PID_Regulator.I_Factor = 17.0f;         //PID Regulator factor initialize   <-> The Best Factor: 17.0  
-    PID_Regulator.D_Factor = 0.90f;          //PID Regulator factor initialize  <-> The Best Factor: 1.0
+    PID_Regulator.I_Factor = 15.0f;         //PID Regulator factor initialize   <-> The Best Factor: 15.0  
+    PID_Regulator.D_Factor = 1.0f;         //PID Regulator factor initialize    <-> The Best Factor: 1.0
 
     mpu_Init();
 }
@@ -106,29 +106,35 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
         break;
 
         case drive_left: //left
+            disable_Hall_IRQ();
             motion.move_Time_Stamp = time_us_32();              //Metal detection necessary time stamp <-> elimination pi pico timer errors
+            disable_Metal_Detection();
             servo_Set_Velocity(servo_front_left, -velocity_t/4);
             servo_Set_Velocity(servo_front_right, velocity_t/5);
             servo_Set_Velocity(servo_back_left,  -velocity_t/5);
             servo_Set_Velocity(servo_back_right,  velocity_t/4);
-            busy_wait_ms(40);                                   //Delay necessary for MPU6050 to get stable yaw angle
+            //busy_wait_ms(40);                                   //Delay necessary for MPU6050 to get stable yaw angle
             motion.adjusted_Angle = mpu_Get_Yaw() + 10.0f;              //MPU6050 set adjusted yaw <-> necessary for PID regulator 
             motion.current_Yaw = motion.adjusted_Angle - 10.0f; //MPU6050 set adjusted yaw <-> necessary for PID regulator
             PID_Regulator.I_Segment = 0.0f;                     //Clear PID I segment accumulation error - I segment
             motion.move_Direction = drive_left;                 //Set move direction
+            reset_metal_Detection();
         break;
 
         case drive_right: //right
+            disable_Hall_IRQ();
             motion.move_Time_Stamp = time_us_32();              //Metal detection necessary time stamp <-> elimination pi pico timer errors
+            disable_Metal_Detection();
             servo_Set_Velocity(servo_front_left,  velocity_t/6);
             servo_Set_Velocity(servo_front_right,-velocity_t/5);
             servo_Set_Velocity(servo_back_left,   velocity_t/5);
             servo_Set_Velocity(servo_back_right, -velocity_t/6);
-            busy_wait_ms(40);                                   //Delay necessary for MPU6050 to get stable yaw angle
+            //busy_wait_ms(40);                                   //Delay necessary for MPU6050 to get stable yaw angle
             motion.adjusted_Angle = mpu_Get_Yaw() - 10.0f;              //MPU6050 set adjusted yaw <-> necessary for PID regulator 
             motion.current_Yaw = motion.adjusted_Angle + 10.0f; //MPU6050 set adjusted yaw <-> necessary for PID regulator
             PID_Regulator.I_Segment = 0.0f;                     //Clear PID I segment accumulation error - I segment
             motion.move_Direction = drive_right;                //Set move direction
+            reset_metal_Detection();
         break;
 
         case drive_stop: //stop
@@ -136,8 +142,9 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             servo_Set_Velocity(servo_front_right,0); //STOP Vehicle
             servo_Set_Velocity(servo_back_left,  0); //STOP Vehicle
             servo_Set_Velocity(servo_back_right, 0); //STOP Vehicle
-            motion.move_Time_Stamp = time_us_32();   //Metal detection necessary time stamp <-> elimination pi pico timer errors
+            motion.move_Time_Stamp = time_us_32();   //Metal detection necessary time stamp <-> elimination pi pico timer error
             motion.move_Direction = drive_stop;      //Set move direction
+        break;
 
         default:
             servo_Set_Velocity(servo_front_left, 0); //STOP Vehicle
@@ -147,6 +154,12 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
             motion.move_Time_Stamp = time_us_32();   //Metal detection necessary time stamp <-> elimination pi pico timer errors
             motion.move_Direction = drive_stop;      //Set move direction
     }   
+
+    if(get_Move_Direction() == 3 || get_Move_Direction() == 4)
+    {
+        enable_Metal_Detection();
+        enable_Hall_IRQ();
+    }
 }
 
 float deg_To_Rad(float degrees)
@@ -182,7 +195,7 @@ void turn_Right()
 }
 
 void drive_Forward()
-{   printf("%f\n", mpu_Get_Yaw());
+{   //printf("%f\n", mpu_Get_Yaw()); //<-> PID Regulator measurements 
     float error = motion.adjusted_Angle - motion.current_Yaw;
     PID_Regulator.P_Segment  = error * PID_Regulator.P_Factor; 
     PID_Regulator.I_Segment += error * PID_Regulator.I_Factor * PID_Elapsed_Time;
@@ -220,7 +233,7 @@ void drive_Forward()
 }
 
 void drive_Backward()
-{   printf("%f\n", mpu_Get_Yaw());
+{   //printf("%f\n", mpu_Get_Yaw());
     float error = motion.adjusted_Angle - motion.current_Yaw;
     PID_Regulator.P_Segment  = error * PID_Regulator.P_Factor; 
     PID_Regulator.I_Segment += error * PID_Regulator.I_Factor * PID_Elapsed_Time;
@@ -260,4 +273,16 @@ void drive_Backward()
 uint32_t get_move_Time_Stamp(void)
 {
     return motion.move_Time_Stamp;
+}
+
+void disable_Hall_IRQ(void)
+{
+    gpio_set_irq_enabled(hall_left,  GPIO_IRQ_EDGE_FALL, false);
+    //gpio_set_irq_enabled(hall_right, GPIO_IRQ_EDGE_FALL, false);
+}
+
+void enable_Hall_IRQ(void)
+{
+    gpio_set_irq_enabled(hall_left,  GPIO_IRQ_EDGE_FALL, true);
+    //gpio_set_irq_enabled(hall_right,  GPIO_IRQ_EDGE_FALL, true);
 }

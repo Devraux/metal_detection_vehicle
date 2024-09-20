@@ -5,7 +5,7 @@ static GPS_State_t GPS_State;
 static buffer_t nmea_Frame_Buffer = {0}; 
 
 void GPS_Init(uint8_t rx_Gpio_t, uint8_t tx_Gpio_t)
-{
+{   
     irq_set_enabled(UART1_IRQ, false);
 
     uart_inst_t *uart = uart_get_instance(UART_ID);
@@ -85,7 +85,6 @@ static void NMEA_FRAME_PARSE(void)
     //printf("\n------=END of NMEA FRAME=------\n");
     */  
 
-   
     //printf("H: %d M: %d S: %d\n", GPS.Hour, GPS.Minute, GPS.Second);
     //printf("Latitude: %d Latitude_dec: %d Latitude_direction: %c\n", GPS.Latitude, GPS.Latitude_dec, GPS.Latitude_Direction + '0');
     //printf("Longitude: %d Longitude_dec: %d Longitude_direction:%c\n", GPS.Longitude, GPS.Longitude_dec, GPS.Longitude_Direction + '0');

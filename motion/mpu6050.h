@@ -4,14 +4,17 @@
 #include <math.h>
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
-#include "../buffer/buffer.h" 
+#include "hardware/dma.h"
+#include "pico/stdlib.h"
+#include "../buffer/buffer.h"
+#include "../metal_detection/metal_detection.h" 
 
 #define SDA_Pin 26
 #define SCL_Pin 27
 
 #define Accel_Resolution 0x00000000 //±2g
 #define Gyro_Resolution  0x00000000 //±250deg/sec
-#define MPU_Time_Stamp 250 // 4 times per second
+#define MPU_Time_Stamp 123 // 8 times per second
 
 typedef struct mpu6050_Reg_t{
     const uint8_t address;            //device address
@@ -88,4 +91,7 @@ void mpu_Get_Offset(void);
 /// @return yaw from mpu6050
 float mpu_Get_Yaw(void);
 
+void DMA_I2C_Init(void);
+void DMA_Callback(void);
+void DMA_I2C_Read(void);
 #endif

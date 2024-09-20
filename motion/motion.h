@@ -117,4 +117,14 @@ void drive_Forward(void);
 /// @brief drive backward based on PID Regulator
 /// @param --
 void drive_Backward(void);
+
+/// @brief disable HALL IRQ
+/// @param --
+/// @attention Only left Hall sensor is disabled 
+void disable_Hall_IRQ(void);
+
+/// @brief enable HALL IRQ
+/// @param --
+/// @attention Only left Hall sensor is enabled 
+void enable_Hall_IRQ(void);
 #endif

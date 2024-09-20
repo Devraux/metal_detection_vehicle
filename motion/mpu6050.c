@@ -24,7 +24,7 @@ static mpu6050_Reg_t mpu6050_Reg = {
 };
 
 static mpu6050_t mpu6050 = {0};
-
+static bool transfer_complete = false;
 static struct repeating_timer timer;
 
 static void i2c_Write_Reg(uint8_t i2c_Address, uint8_t reg, uint8_t data)
@@ -50,7 +50,7 @@ void mpu_Init(void)
     mpu6050.Yaw = 90.0f; // initial angle is 90* <-> not 0 !!! <->  cartesian coordinate system
 
     //MPU6050 INTERRUPT INIT
-    add_repeating_timer_ms(-58, mpu_Read, NULL, &timer); // 4 times per second
+    add_repeating_timer_ms(-123, mpu_Read, NULL, &timer); // 8 times per second
 }
 
 void mpu_Reset(void)
@@ -108,7 +108,7 @@ bool mpu_Read(struct repeating_timer *timer)
     else 
         Z_Gyro_No_Offset = 0;
 
-    mpu6050.Yaw += Z_Gyro * 0.058f;
+    mpu6050.Yaw += Z_Gyro * 0.123f;
 
     if(mpu6050.Yaw >= 360.0f)
         mpu6050.Yaw = fmod(mpu6050.Yaw, 360.0f);
@@ -154,4 +154,24 @@ void mpu_Get_Offset(void)
 float mpu_Get_Yaw(void)
 {
     return mpu6050.Yaw;
+}
+
+void DMA_I2C_init(void) 
+{
+    dma_channel_config channel_config = dma_channel_get_default_config(0);
+    channel_config_set_read_increment(&channel_config, true);
+    channel_config_set_write_increment(&channel_config, false);
+    dma_channel_set_config(0, &channel_config, false);
+    irq_set_exclusive_handler(DMA_IRQ_0, DMA_Callback);
+    irq_set_enabled(DMA_IRQ_0, true);
+}
+
+void DMA_Callback(void) 
+{
+    transfer_complete = true;
+}
+
+void DMA_I2C_Read(void) 
+{
+
 }

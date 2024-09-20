@@ -11,13 +11,10 @@ static float X = 0.0f, Y = 0.0f;
 void robot_Boot_Strap(void)
 {
     stdio_init_all();
-
-    //INITIALIZATION: IRQ NVIC
-    irq_Init();
-
+    
     //INITIALIZATION: WIFI | UDP
     pico_Wifi_Transmission_Init(SSID, PASSWORD);
-
+    
     //INITIALIZATION: HALL Sensor | MPU6050 | SERVO |
     motion_Init(servo_front_left, servo_front_right, servo_back_left, servo_back_right, hall_left, hall_right, &gpio_callback);
    
@@ -27,13 +24,17 @@ void robot_Boot_Strap(void)
     //INITIALIZATION: GPS
     GPS_Init(GPS_Rx_Gpio, GPS_Tx_Gpio);
 
+    //INITIALIZATION: Measurements | Update Velocity
     add_repeating_timer_ms(-235, &period_Robot_Measurements, NULL, &timer);
     add_repeating_timer_ms(-145, &queue_Set_Velocity, NULL, &timer2);
+
+    //INITIALIZATION: IRQ NVIC
+    irq_Init();
 }
 
 bool period_Robot_Measurements(struct repeating_timer *timer)
-{   //printf("metal_detection: %d\n",get_Metal_Detection_Status());
-    GPS_Get_Info(&GPS_Data);
+{   printf("metal_detection: %d\n",get_Metal_Detection_Status());
+    GPS_Get_Info(&GPS_Data); //printf("data: %d", pico_To_Server_Data.GPS_Latitude);
     pico_To_Server_Data.GPS_Latitude = GPS_Data.Latitude;
     pico_To_Server_Data.GPS_Latitude_dec =  GPS_Data.Latitude_dec;
     pico_To_Server_Data.GPS_Latitude_Direction = GPS_Data.Latitude_Direction;
@@ -47,7 +48,7 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     motion_Get_XY(&X, &Y); 
     pico_To_Server_Data.MPU_X = X;
     pico_To_Server_Data.MPU_Y = Y;
-    //printf("X: %f, Y: %f\n", pico_To_Server_Data.MPU_X, pico_To_Server_Data.MPU_Y);
+    
     pico_To_Server_Data.status = 0; //everything goes good
   
     // Add received data from device to Queue and clear data structure
@@ -59,7 +60,6 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     //    queue_try_remove(&queue_Server_To_Pico, &server_To_Pico_Data_Buffer);
     //    move(server_To_Pico_Data_Buffer.direction, 250);
     //}
-    
     return true;
 }
 

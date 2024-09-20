@@ -4,6 +4,9 @@
 #include <stdint.h> 
 #include <stdio.h>
 
+#include "pico/stdlib.h"
+#include "hardware/irq.h"
+#include "hardware/gpio.h"
 #include "hardware/timer.h"
 #include "metal_detection/metal_detection.h"
 #include "motion/motion.h"

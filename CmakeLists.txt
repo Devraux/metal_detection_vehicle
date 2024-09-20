@@ -48,6 +48,8 @@ target_link_libraries(${PROJECT_NAME}
     hardware_timer
     hardware_uart
     hardware_i2c
+    hardware_irq
+    hardware_dma
     pico_multicore
     pico_util
     pico_cyw43_arch_lwip_threadsafe_background

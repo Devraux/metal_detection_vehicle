@@ -17,10 +17,12 @@
 typedef struct metal_detect_data_t
 {
     bool metal_Detected;              // 0 -> metal is not detected, 1-> metal detected
-    uint32_t detected_Metal_Counter;  //counts metal occurrences <-> NOT USED
-    uint32_t detection_Average;       //additional variable storing the average value of the time between the occurrences of the generator signal edges  
-}metal_detect_data_t;
+    uint32_t detected_Metal_Counter;  // NOT USED
+    uint32_t current_Edge_Counter;    //NE555 Circuit Current Edge Counter
+    uint32_t previous_Edge_Counter;   //NE555 Circuit Previous Edge Counter 
+    bool metal_Detection_Startup;     //Metal Detection Startup <-> metal detection algorithm need compute data more than twice to properly working 
 
+}metal_detect_data_t;
 
 /// @brief initialize metal detection part
 /// @param  -- 
@@ -49,4 +51,16 @@ bool get_Metal_Detection_Status(void);
 /// @param  --
 /// @return number of metal detections
 uint32_t get_Metal_Detection_Counter(void);
+
+/// @brief disable metal detection  
+/// @param --
+void disable_Metal_Detection(void);
+
+/// @brief enable metal detection 
+/// @param --
+void enable_Metal_Detection(void);
+
+/// @brief reset metal detection algorithm <-> necessary for properly metal detection startup
+/// @param --
+void reset_metal_Detection(void);
 #endif
