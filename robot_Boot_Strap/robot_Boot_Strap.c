@@ -28,13 +28,13 @@ void robot_Boot_Strap(void)
     add_repeating_timer_ms(-235, &period_Robot_Measurements, NULL, &timer);
     add_repeating_timer_ms(-145, &queue_Set_Velocity, NULL, &timer2);
 
-    //INITIALIZATION: IRQ NVIC
+    //INITIALIZATION: IRQ NVIC | IRQ PRIORITY
     irq_Init();
 }
 
 bool period_Robot_Measurements(struct repeating_timer *timer)
-{   printf("metal_detection: %d\n",get_Metal_Detection_Status());
-    GPS_Get_Info(&GPS_Data); //printf("data: %d", pico_To_Server_Data.GPS_Latitude);
+{   //printf("metal_detection: %d\n",get_Metal_Detection_Status());
+    GPS_Get_Info(&GPS_Data); 
     pico_To_Server_Data.GPS_Latitude = GPS_Data.Latitude;
     pico_To_Server_Data.GPS_Latitude_dec =  GPS_Data.Latitude_dec;
     pico_To_Server_Data.GPS_Latitude_Direction = GPS_Data.Latitude_Direction;
@@ -43,11 +43,11 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     pico_To_Server_Data.GPS_Longitude_Direction =  GPS_Data.Longitude_Direction;
 
     pico_To_Server_Data.metal_Detection = get_Metal_Detection_Status();
-    //pico_To_Server_Data[data_Frame_Counter].metal_Detection_Counter = get_Metal_Detection_Counter();
+    //pico_To_Server_Data[data_Frame_Counter].metal_Detection_Counter = get_Metal_Detection_Counter(); // NOT USED <-> require repair
 
-    motion_Get_XY(&X, &Y); 
-    pico_To_Server_Data.MPU_X = X;
-    pico_To_Server_Data.MPU_Y = Y;
+    motion_Get_XY(&X, &Y);          
+    pico_To_Server_Data.MPU_X = X;  
+    pico_To_Server_Data.MPU_Y = Y;  
     
     pico_To_Server_Data.status = 0; //everything goes good
   

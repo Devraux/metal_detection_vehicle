@@ -37,7 +37,7 @@ static bool compute_Detections_Data(struct repeating_timer *timer)
     if(metal_detect_data.previous_Edge_Counter == 0)
         metal_detect_data.metal_Detected = false;
 
-    printf("Previous Counter: %d, Curent counter: %d\n",metal_detect_data.previous_Edge_Counter, metal_detect_data.current_Edge_Counter);
+    //printf("Previous Counter: %d, Curent counter: %d\n",metal_detect_data.previous_Edge_Counter, metal_detect_data.current_Edge_Counter);
     metal_detect_data.previous_Edge_Counter = metal_detect_data.current_Edge_Counter;
     metal_detect_data.current_Edge_Counter = 0;  
     gpio_set_irq_enabled(metal_detect_gpio, GPIO_IRQ_EDGE_FALL, true);
