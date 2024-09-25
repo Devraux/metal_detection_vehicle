@@ -23,9 +23,9 @@ void motion_Init(uint8_t servo_front_left_t, uint8_t servo_front_right_t, uint8_
     motion.adjusted_Angle  = 90.0f;         //Initial value of device yaw angle
     motion.current_Yaw     = 90.0f;         //Device Current Yaw
     
-    PID_Regulator.P_Factor = 10.0f;         //PID Regulator factor initialize   <-> The Best Factor: 10.0
-    PID_Regulator.I_Factor = 15.0f;         //PID Regulator factor initialize   <-> The Best Factor: 15.0  
-    PID_Regulator.D_Factor = 1.0f;         //PID Regulator factor initialize    <-> The Best Factor: 1.0
+    PID_Regulator.P_Factor = 7.0f;         //PID Regulator factor initialize   <-> The Best Factor: 10.0
+    PID_Regulator.I_Factor = 15.0f;        //PID Regulator factor initialize   <-> The Best Factor: 15.0  
+    PID_Regulator.D_Factor = 0.85f;        //PID Regulator factor initialize   <-> The Best Factor: 1.0
 
     mpu_Init();
 }
@@ -38,7 +38,7 @@ void distance_Update(void)
     else if(motion.move_Direction == drive_backward) // backward
         motion.distance -= hall_distance;            // ~0.05 meter = 5cm
     
-    motion.distance_Absolute += hall_distance;       //Device absolute distance 
+    motion.distance_Absolute += hall_distance;       //Device Absolute Distance 
 }
 
 uint8_t get_Move_Direction(void)
@@ -83,10 +83,10 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
     {
         case drive_forward:                                            //forward
             motion.move_Time_Stamp = time_us_32();                     //time stamp
-            //servo_Set_Velocity(servo_front_left, velocity_t);        // Simple Set Velocity <-> without PID
-            //servo_Set_Velocity(servo_front_right,velocity_t);        // Simple Set Velocity <-> without PID
-            //servo_Set_Velocity(servo_back_left,  velocity_t);        // Simple Set Velocity <-> without PID
-            //servo_Set_Velocity(servo_back_right, velocity_t);        // Simple Set Velocity <-> without PID
+            //servo_Set_Velocity(servo_front_left, velocity_t);        // Simple Set Velocity <-> without PID <-> NOT USED
+            //servo_Set_Velocity(servo_front_right,velocity_t);        // Simple Set Velocity <-> without PID <-> NOT USED
+            //servo_Set_Velocity(servo_back_left,  velocity_t);        // Simple Set Velocity <-> without PID <-> NOT USED
+            //servo_Set_Velocity(servo_back_right, velocity_t);        // Simple Set Velocity <-> without PID <-> NOT USED
 
             drive_Forward();
             motion.current_Yaw = mpu_Get_Yaw();
@@ -95,24 +95,24 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
 
         case drive_backward:                                          //backward
             motion.move_Time_Stamp = time_us_32();                    //time stamp
-            //servo_Set_Velocity(servo_front_left, -velocity_t);      // Simple Set Velocity <-> without PID
-            //servo_Set_Velocity(servo_front_right,-velocity_t);      // Simple Set Velocity <-> without PID
-            //servo_Set_Velocity(servo_back_left,  -velocity_t);      // Simple Set Velocity <-> without PID
-            //servo_Set_Velocity(servo_back_right, -velocity_t);      // Simple Set Velocity <-> without PID
+            //servo_Set_Velocity(servo_front_left, -velocity_t);      // Simple Set Velocity <-> without PID <-> NOT USED
+            //servo_Set_Velocity(servo_front_right,-velocity_t);      // Simple Set Velocity <-> without PID <-> NOT USED
+            //servo_Set_Velocity(servo_back_left,  -velocity_t);      // Simple Set Velocity <-> without PID <-> NOT USED
+            //servo_Set_Velocity(servo_back_right, -velocity_t);      // Simple Set Velocity <-> without PID <-> NOT USED
 
             drive_Backward();
             motion.current_Yaw = mpu_Get_Yaw();
             motion.move_Direction = drive_backward;
         break;
 
-        case drive_left:                                            //left
+        case drive_left:                                            //Drive Left
             disable_Hall_IRQ();                                     //Disable Hall IRQ <-> Eliminate metal detection errors 
             motion.move_Time_Stamp = time_us_32();                  //Metal detection necessary time stamp <-> elimination pi pico timer errors
-            disable_Metal_Detection();
-            servo_Set_Velocity(servo_front_left, -velocity_t/4);
-            servo_Set_Velocity(servo_front_right, velocity_t/5);
-            servo_Set_Velocity(servo_back_left,  -velocity_t/5);
-            servo_Set_Velocity(servo_back_right,  velocity_t/4);
+            disable_Metal_Detection();                              //Disable metal detections <-> elimination metal detection errors
+            servo_Set_Velocity(servo_front_left, -velocity_t/4);    // Simple Set Velocity <-> divide factor caused by servo non - idealities        
+            servo_Set_Velocity(servo_front_right, velocity_t/5);    // Simple Set Velocity <-> divide factor caused by servo non - idealities    
+            servo_Set_Velocity(servo_back_left,  -velocity_t/5);    // Simple Set Velocity <-> divide factor caused by servo non - idealities
+            servo_Set_Velocity(servo_back_right,  velocity_t/4);    // Simple Set Velocity <-> divide factor caused by servo non - idealities
             //busy_wait_ms(40);                                     //Delay necessary for MPU6050 to get stable yaw angle
             motion.adjusted_Angle = mpu_Get_Yaw() + 10.0f;          //MPU6050 set adjusted yaw <-> necessary for PID regulator 
             motion.current_Yaw = motion.adjusted_Angle - 10.0f;     //MPU6050 set adjusted yaw <-> necessary for PID regulator
@@ -124,11 +124,11 @@ void move(uint8_t move_direction_t, int16_t velocity_t)
         case drive_right: //right
             disable_Hall_IRQ();                                     //Disable Hall IRQ <-> Eliminate metal detection errors 
             motion.move_Time_Stamp = time_us_32();                  //Metal detection necessary time stamp <-> elimination pi pico timer errors
-            disable_Metal_Detection();
-            servo_Set_Velocity(servo_front_left,  velocity_t/6);
-            servo_Set_Velocity(servo_front_right,-velocity_t/5);
-            servo_Set_Velocity(servo_back_left,   velocity_t/5);
-            servo_Set_Velocity(servo_back_right, -velocity_t/6);
+            disable_Metal_Detection();                              //Disable metal detections <-> elimination metal detection errors
+            servo_Set_Velocity(servo_front_left,  velocity_t/6);    // Simple Set Velocity <-> divide factor caused by servo non - idealities 
+            servo_Set_Velocity(servo_front_right,-velocity_t/5);    // Simple Set Velocity <-> divide factor caused by servo non - idealities 
+            servo_Set_Velocity(servo_back_left,   velocity_t/5);    // Simple Set Velocity <-> divide factor caused by servo non - idealities
+            servo_Set_Velocity(servo_back_right, -velocity_t/6);    // Simple Set Velocity <-> divide factor caused by servo non - idealities
             //busy_wait_ms(40);                                     //Delay necessary for MPU6050 to get stable yaw angle
             motion.adjusted_Angle = mpu_Get_Yaw() - 10.0f;          //MPU6050 set adjusted yaw <-> necessary for PID regulator 
             motion.current_Yaw = motion.adjusted_Angle + 10.0f;     //MPU6050 set adjusted yaw <-> necessary for PID regulator

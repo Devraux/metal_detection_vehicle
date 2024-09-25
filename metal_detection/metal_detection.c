@@ -3,6 +3,7 @@
 metal_detect_data_t metal_detect_data = {0};
 static buffer_t buffer;
 static struct repeating_timer timer;
+static uint32_t last_Detection_ABS_Distance;
 
 void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
 {
@@ -29,12 +30,18 @@ static bool compute_Detections_Data(struct repeating_timer *timer)
         return true;
     }
 
-    if((metal_detect_data.current_Edge_Counter >= metal_detect_data.previous_Edge_Counter + 2) || (metal_detect_data.current_Edge_Counter <= metal_detect_data.previous_Edge_Counter - 2))
+    if(((metal_detect_data.current_Edge_Counter >= metal_detect_data.previous_Edge_Counter + 2) || (metal_detect_data.current_Edge_Counter <= metal_detect_data.previous_Edge_Counter - 2)) && (get_Absolute_Distance() ))
+    {    
+        last_Detection_ABS_Distance = get_Absolute_Distance();
         metal_detect_data.metal_Detected = true;
+    }
     else 
         metal_detect_data.metal_Detected = false;
 
     if(metal_detect_data.previous_Edge_Counter == 0)
+        metal_detect_data.metal_Detected = false;
+
+    if(last_Detection_ABS_Distance == get_Absolute_Distance())
         metal_detect_data.metal_Detected = false;
 
     //printf("Previous Counter: %d, Curent counter: %d\n",metal_detect_data.previous_Edge_Counter, metal_detect_data.current_Edge_Counter);

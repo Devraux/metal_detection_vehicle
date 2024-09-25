@@ -10,25 +10,26 @@ static float X = 0.0f, Y = 0.0f;
 
 void robot_Boot_Strap(void)
 {
+    //INITIALIZATION: STANDARD INPUT/OUTPUT |
     stdio_init_all();
     
-    //INITIALIZATION: WIFI | UDP
+    //INITIALIZATION: WIFI | UDP Transmission |
     pico_Wifi_Transmission_Init(SSID, PASSWORD);
     
     //INITIALIZATION: HALL Sensor | MPU6050 | SERVO |
     motion_Init(servo_front_left, servo_front_right, servo_back_left, servo_back_right, hall_left, hall_right, &gpio_callback);
    
-    //INITIALIZATION: metal Detector
+    //INITIALIZATION: metal Detector |
     metal_Detect_Init(metal_detect_gpio, &gpio_callback);
 
-    //INITIALIZATION: GPS
+    //INITIALIZATION: GPS |
     GPS_Init(GPS_Rx_Gpio, GPS_Tx_Gpio);
 
-    //INITIALIZATION: Measurements | Update Velocity
+    //INITIALIZATION: Measurements | Update Velocity |
     add_repeating_timer_ms(-235, &period_Robot_Measurements, NULL, &timer);
     add_repeating_timer_ms(-145, &queue_Set_Velocity, NULL, &timer2);
 
-    //INITIALIZATION: IRQ NVIC | IRQ PRIORITY
+    //INITIALIZATION: IRQ NVIC | IRQ PRIORITY |
     irq_Init();
 }
 
