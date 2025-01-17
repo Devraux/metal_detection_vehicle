@@ -12,7 +12,7 @@ void metal_Detect_Init(uint8_t gpio_num_t, void *gpio_callback)
     gpio_pull_up(gpio_num_t);
     gpio_set_irq_enabled_with_callback(gpio_num_t, GPIO_IRQ_EDGE_FALL, true, gpio_callback);
 
-    add_repeating_timer_ms(-154, compute_Detections_Data, NULL, &timer);    // ~5 times per second
+    add_repeating_timer_ms(-221, compute_Detections_Data, NULL, &timer);    // ~5 times per second
 }
 
 void metal_Detect_Irq(void)
@@ -72,7 +72,7 @@ void disable_Metal_Detection(void)
 
 void enable_Metal_Detection(void)
 {
-    add_repeating_timer_ms(-154, compute_Detections_Data, NULL, &timer); //@attention this method needs improvement
+    add_repeating_timer_ms(-221, compute_Detections_Data, NULL, &timer); 
     gpio_set_irq_enabled(metal_detect_gpio, GPIO_IRQ_EDGE_FALL, true);
 }
 

@@ -61,6 +61,8 @@ typedef struct mpu6050_t{
     float Yaw;
 }mpu6050_t;
 
+extern bool I2C_Get_Data_Flag; // I2C flag <-> 1-> I2C interrupt is in progress, 0 -> otherwise  
+
 /// @brief I2C pi pico build in i2c wrapper 
 /// @param i2c_address device address
 /// @param reg device register(place to write data)
@@ -91,6 +93,7 @@ void mpu_Get_Offset(void);
 /// @return yaw from mpu6050
 float mpu_Get_Yaw(void);
 
+//DMA Part is not used and not finished yet
 void DMA_I2C_Init(void);
 void DMA_Callback(void);
 void DMA_I2C_Read(void);

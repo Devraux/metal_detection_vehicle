@@ -17,7 +17,9 @@
 #define UART_ID 1
 #define GPS_MSG_MAX_LEN 255
 
-// @attention My project doesn't use a lot of informations received from GPS receiver device <-> I only use GPRMC frame to obtain:
+
+/// @attention
+//  My project doesn't use a lot of informations received from GPS receiver device <-> I only use GPRMC frame to obtain:
 // - Longitude
 // - Latitude
 // - Hour
@@ -94,7 +96,7 @@ static uint32_t merge_3(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3);
 /// @param digit_4 fourth digit 
 static uint32_t merge_4(uint32_t digit_1, uint32_t digit_2, uint32_t digit_3, uint32_t digit_4);
 
-/// @brief merge 5 digits for example: a = 1, b = 2, c = 3, d = 4, e = 5 result = 1234 5
+/// @brief merge 5 digits for example: a = 1, b = 2, c = 3, d = 4, e = 5 result = 12345
 /// @param digit_1 first digit
 /// @param digit_2 second digit
 /// @param digit_3 third digit

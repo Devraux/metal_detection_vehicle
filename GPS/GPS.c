@@ -48,16 +48,16 @@ static void NMEA_FRAME_PARSE(void)
     if(nmea_Frame_Buffer.buffer_Data[4] == (uint32_t)'M' && nmea_Frame_Buffer.buffer_Data[5] == (uint32_t)'C')
     {   
         ASCII_Convert(nmea_Frame_Buffer.buffer_Data, nmea_Frame_Buffer.counter);
-        GPS.Hour =  (merge_2(nmea_Frame_Buffer.buffer_Data[7], nmea_Frame_Buffer.buffer_Data[8]) + 2) % 24;
-        GPS.Minute = merge_2(nmea_Frame_Buffer.buffer_Data[9], nmea_Frame_Buffer.buffer_Data[10]);
-        GPS.Second = merge_2(nmea_Frame_Buffer.buffer_Data[11], nmea_Frame_Buffer.buffer_Data[12]);
+        GPS.Hour   = (merge_2(nmea_Frame_Buffer.buffer_Data[7],  nmea_Frame_Buffer.buffer_Data[8]) + 2) % 24;
+        GPS.Minute =  merge_2(nmea_Frame_Buffer.buffer_Data[9],  nmea_Frame_Buffer.buffer_Data[10]);
+        GPS.Second =  merge_2(nmea_Frame_Buffer.buffer_Data[11], nmea_Frame_Buffer.buffer_Data[12]);
 
-        GPS.Latitude = merge_4(nmea_Frame_Buffer.buffer_Data[19], nmea_Frame_Buffer.buffer_Data[20], nmea_Frame_Buffer.buffer_Data[21],nmea_Frame_Buffer.buffer_Data[22]);
-        GPS.Latitude_dec = merge_4(nmea_Frame_Buffer.buffer_Data[24],nmea_Frame_Buffer.buffer_Data[25], nmea_Frame_Buffer.buffer_Data[26],nmea_Frame_Buffer.buffer_Data[27]);
+        GPS.Latitude     = merge_4(nmea_Frame_Buffer.buffer_Data[19], nmea_Frame_Buffer.buffer_Data[20], nmea_Frame_Buffer.buffer_Data[21], nmea_Frame_Buffer.buffer_Data[22]);
+        GPS.Latitude_dec = merge_4(nmea_Frame_Buffer.buffer_Data[24], nmea_Frame_Buffer.buffer_Data[25], nmea_Frame_Buffer.buffer_Data[26], nmea_Frame_Buffer.buffer_Data[27]);
         GPS.Latitude_Direction = nmea_Frame_Buffer.buffer_Data[30];
 
-        GPS.Longitude = merge_5(nmea_Frame_Buffer.buffer_Data[32], nmea_Frame_Buffer.buffer_Data[33], nmea_Frame_Buffer.buffer_Data[34],nmea_Frame_Buffer.buffer_Data[35], nmea_Frame_Buffer.buffer_Data[36]);
-        GPS.Longitude_dec = merge_4(nmea_Frame_Buffer.buffer_Data[38],nmea_Frame_Buffer.buffer_Data[39], nmea_Frame_Buffer.buffer_Data[40],nmea_Frame_Buffer.buffer_Data[41]);
+        GPS.Longitude     = merge_5(nmea_Frame_Buffer.buffer_Data[32], nmea_Frame_Buffer.buffer_Data[33], nmea_Frame_Buffer.buffer_Data[34], nmea_Frame_Buffer.buffer_Data[35], nmea_Frame_Buffer.buffer_Data[36]);
+        GPS.Longitude_dec = merge_4(nmea_Frame_Buffer.buffer_Data[38], nmea_Frame_Buffer.buffer_Data[39], nmea_Frame_Buffer.buffer_Data[40], nmea_Frame_Buffer.buffer_Data[41]);
         GPS.Longitude_Direction = nmea_Frame_Buffer.buffer_Data[44];
     }
 

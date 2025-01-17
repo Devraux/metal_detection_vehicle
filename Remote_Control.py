@@ -1,3 +1,7 @@
+########################################################################################
+# THIS CODE IS DEDICATED TO TESTING WIFI TRANSMISSION AND IS NOT USED IN FINAL PROJECT #
+#########################################################################################
+
 import socket
 import keyboard
 import time

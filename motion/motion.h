@@ -7,14 +7,14 @@
 #include "math.h"
 #include "mpu6050.h"
 
-#define servo_front_right 10   //front <-> right 
-#define servo_back_right  11   //back  <-> right
-#define servo_back_left   12   //back  <-> left
-#define servo_front_left  13   //front <-> left
-
-#define hall_right 16          //right hall sensor
-#define hall_left  17          //left hall sensor
-#define hall_distance 0.05f    //traveled distance between hall sensor irq's <-> 0.05m = 5cm
+#define servo_front_right 10    //front <-> right 
+#define servo_back_right  11    //back  <-> right
+#define servo_back_left   12    //back  <-> left
+#define servo_front_left  13    //front <-> left
+ 
+#define hall_right        16    //right hall sensor
+#define hall_left         17    //left hall sensor
+#define hall_distance     0.05f //traveled distance between hall sensor irq's <-> 0.05m = 5cm
 
 #define drive_forward   1
 #define drive_backward  2

@@ -36,11 +36,11 @@ void robot_Boot_Strap(void)
 bool period_Robot_Measurements(struct repeating_timer *timer)
 {   //printf("metal_detection: %d\n",get_Metal_Detection_Status());
     GPS_Get_Info(&GPS_Data); 
-    pico_To_Server_Data.GPS_Latitude = GPS_Data.Latitude;
-    pico_To_Server_Data.GPS_Latitude_dec =  GPS_Data.Latitude_dec;
-    pico_To_Server_Data.GPS_Latitude_Direction = GPS_Data.Latitude_Direction;
-    pico_To_Server_Data.GPS_Longitude =  GPS_Data.Longitude;
-    pico_To_Server_Data.GPS_Longitude_dec =  GPS_Data.Longitude_dec;
+    pico_To_Server_Data.GPS_Latitude            = GPS_Data.Latitude;
+    pico_To_Server_Data.GPS_Latitude_dec        =  GPS_Data.Latitude_dec;
+    pico_To_Server_Data.GPS_Latitude_Direction  = GPS_Data.Latitude_Direction;
+    pico_To_Server_Data.GPS_Longitude           =  GPS_Data.Longitude;
+    pico_To_Server_Data.GPS_Longitude_dec       =  GPS_Data.Longitude_dec;
     pico_To_Server_Data.GPS_Longitude_Direction =  GPS_Data.Longitude_Direction;
 
     pico_To_Server_Data.metal_Detection = get_Metal_Detection_Status();
@@ -56,11 +56,6 @@ bool period_Robot_Measurements(struct repeating_timer *timer)
     queue_try_add(&queue_Pico_To_Server, &pico_To_Server_Data); 
     memset(&pico_To_Server_Data, 0, sizeof(pico_To_Server_Frame_t));  //clear sended data  
 
-    //if(queue_is_full(&queue_Server_To_Pico))
-    //{
-    //    queue_try_remove(&queue_Server_To_Pico, &server_To_Pico_Data_Buffer);
-    //    move(server_To_Pico_Data_Buffer.direction, 250);
-    //}
     return true;
 }
 

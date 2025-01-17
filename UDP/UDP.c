@@ -13,7 +13,7 @@ static pico_To_Server_Frame_t pico_To_Server_Data_Buffer;
 
 void UDP_Receive_Init(void) 
 {
-    if (receive_pcb == NULL)
+    if(receive_pcb == NULL)
     {
         receive_pcb = udp_new();
         if(receive_pcb == NULL)
@@ -22,10 +22,11 @@ void UDP_Receive_Init(void)
             return;
         }
 
-
         if (receive_pcb != NULL)
         {
-            err_t err = udp_bind(receive_pcb, IP_ADDR_ANY, UDP_port);
+            // listen on all network interfaces (IP_ADDR_ANY) 
+            // and the specified UDP port (UDP_port) for incoming UDP packets
+            err_t err = udp_bind(receive_pcb, IP_ADDR_ANY, UDP_port); 
             if (err == ERR_OK) 
                 udp_recv(receive_pcb, UDP_Receive_Callback, NULL);
             else 
@@ -111,7 +112,7 @@ void core_1_Entry(void)
 void pico_Wifi_Transmission_Init(const char *ssid, const char *password)
 {
     pico_Hardware_wifi_Init(ssid, password);
-    sleep_ms(1000); //waiting for ip address
+    sleep_ms(1000); //waiting for IP address
     
     UDP_Queue_init();
     

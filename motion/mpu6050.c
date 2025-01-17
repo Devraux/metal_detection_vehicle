@@ -84,6 +84,7 @@ void mpu_Read_Raw(void)
 
 bool mpu_Read(struct repeating_timer *timer)
 {
+    //disable_Metal_Detection();
     mpu_Read_Raw();
 
     // Only YAW  is useful for my application so rest of data is skipped due to reduce MCU computations //
@@ -116,6 +117,7 @@ bool mpu_Read(struct repeating_timer *timer)
     else if(mpu6050.Yaw <= 0.0f)
     mpu6050.Yaw = fmod(mpu6050.Yaw + 360.0f, 360.0f);
 
+    //enable_Metal_Detection();
     return true;
 }
 
@@ -156,22 +158,3 @@ float mpu_Get_Yaw(void)
     return mpu6050.Yaw;
 }
 
-void DMA_I2C_init(void) 
-{
-    dma_channel_config channel_config = dma_channel_get_default_config(0);
-    channel_config_set_read_increment(&channel_config, true);
-    channel_config_set_write_increment(&channel_config, false);
-    dma_channel_set_config(0, &channel_config, false);
-    irq_set_exclusive_handler(DMA_IRQ_0, DMA_Callback);
-    irq_set_enabled(DMA_IRQ_0, true);
-}
-
-void DMA_Callback(void) 
-{
-    transfer_complete = true;
-}
-
-void DMA_I2C_Read(void) 
-{
-
-}
