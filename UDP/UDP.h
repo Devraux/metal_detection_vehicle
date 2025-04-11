@@ -18,7 +18,7 @@
 #define UDP_port 4444
 #define server_IP "192.168.137.1"
 #define SSID "krzysztofplonka"
-#define PASSWORD "82K67?0f"
+#define PASSWORD "YOUR PASSWORD"
 #define server_to_pico_queue_size 1
 #define pico_to_server_queue_size 8
 
