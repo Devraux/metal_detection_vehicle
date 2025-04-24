@@ -1,4 +1,5 @@
 # Metal Detection Vehicle
+![Visitor Badge](https://visitor-badge.laobi.icu/badge?page_id=Devraux.metal_detection_vehicle)
 
 This project is a metal detection vehicle built using the Raspberry Pi Pico W
 (the version with the CYW43439 chip).
